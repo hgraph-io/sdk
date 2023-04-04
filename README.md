@@ -2,7 +2,7 @@
 
 ## Introduction
 
-(Hgraph) [https://hgraph.io] provides data and API services. Our primary product
+[Hgraph] (https://hgraph.io) provides data and API services. Our primary product
 is our [GraphQL](https://graphql.org/) API. You can sign up for an account at
 <https://console.hgraph.io>
 
@@ -19,15 +19,13 @@ versioning.
 **Before a v1 major release there may be breaking changes on new releases. If
 using in production, we recommend pinning an exact release.**
 
-## Installation
-
 ## Installation & Usage
 
 The package can be installed using `npm`, i.e. `npm i @hgraph.io/sdk@0.0.1`. To
 install the most current release change `0.0.1` to the most current version.
 
-The default export of the SDK is a function that accepts two parameters.
-The first parameter is a GraphQL query, either a string or an AST using
+The default export of the SDK is a function that accepts two parameters. The
+first parameter is a GraphQL query, either a string or an AST using
 `graphql-taq`. The second parameter is a configuration object.
 
 The following is pseudo-code. See the examples section for a working code
@@ -59,7 +57,8 @@ await hg(query, options)
 
 The second parameter passed to the hg function accepts a configuration object.
 This is used for authentication as setting additional headers. Additionally,
-there is a filter helper to extract the data desired using jmespath.
+there is a helper function that filters data returned from the API using
+[jmespath](https://jmespath.org/).
 
 ```typescript
 {
@@ -151,19 +150,16 @@ async function main() {
 }
 ```
 
-#### Using apollo client
-
-TODO: show example using apollo client
-
 ## Developing
 
 The following instructions are for meant for contributing to this repo (or
-hacking away.) To run this code base locally use the following steps to get up
+hacking away). To run this code base locally use the following steps to get up
 and running.
 
 - `gh repo clone hgraph-io/sdk`
 - `npm i`
 - `cp .env.example .env`, then add the `HGRAPH_API_KEY`
+- `npm run watch` : watch for file changes and build on change
 - run the example code `node dist/examples/index.js`
 
 ### Debugging
