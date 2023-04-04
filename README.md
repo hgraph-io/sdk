@@ -2,11 +2,13 @@
 
 ## Introduction
 
-[Hgraph] (https://hgraph.io) provides data and API services. Our primary product
-is our [GraphQL](https://graphql.org/) API. You can sign up for an account at
-<https://console.hgraph.io>
+[Hgraph](https://hgraph.io) provides data and API services. You can sign up for
+an account at <https://console.hgraph.io>
 
 This SDK intends to make developing with our API fun, fast, and powerful.
+
+If you’re new to GraphQL, you can learn more [GraphQL](https://graphql.org/).
+Then, build queries using and interactive editor at <https://console.hgraph.io/editor>.
 
 ## Versioning
 
@@ -64,9 +66,10 @@ there is a helper function that filters data returned from the API using
 {
   headers: {
     'x-api-key': '<HGRAPH_API_KEY>', // from https://console.hgraph.io
+    'x-hgraph-network': 'hedera-mainnet' // default Network.HederaMainnet, see src/types.ts & src/defaultOptions.ts
   },
   filter: '<String filter accepted by jmespath>', // default undefined
-  enpoint: 'https://api.hgraph.dev/v1/graphql' // default
+  endpoint: 'https://api.hgraph.dev/v1/graphql', // default
 }
 
 ```
