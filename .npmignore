@@ -1,0 +1,11 @@
+*.sw[a-z]
+node_modules
+.mesh
+.env
+dist/examples
+dist/sdk/browser
+examples
+src/server
+src/graphql
+TODO.md
+.prettierrc

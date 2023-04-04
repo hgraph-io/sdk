@@ -1,0 +1,61 @@
+{
+  "homepage": "https://hgraph.io",
+  "name": "@hgraph.io/sdk",
+  "description": "hgraph.io sdk",
+  "version": "0.0.1",
+  "_main": "./src/index.ts",
+  "main": "./dist/sdk/index.js",
+  "author": "splash@hgraph.io",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hgraph.io/sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hgraph.io/sdk/issues"
+  },
+  "keywords": [
+    "graphql",
+    "nft",
+    "token",
+    "hedera",
+    "mirror-node",
+    "crypto",
+    "api",
+    "hgraph",
+    "web3",
+    "decentralized",
+    "dao"
+  ],
+  "types": "./index.d.ts",
+  "dependencies": {
+    "asn1.js": "^5.4.1",
+    "crypto": "^1.0.1",
+    "glob": "^9.0.1",
+    "graphql": "^16.6.0",
+    "graphql-ws": "^5.11.3",
+    "isomorphic-fetch": "^3.0.0",
+    "isomorphic-ws": "^5.0.0",
+    "jmespath": "^0.16.0",
+    "jose": "^4.12.0",
+    "json-bigint": "^1.0.0",
+    "tweetnacl": "^1.0.3",
+    "ws": "^8.12.0"
+  },
+  "devDependencies": {
+    "@hgraph.io/sdk": "file:.",
+    "@types/isomorphic-fetch": "^0.0.36",
+    "@types/jmespath": "^0.15.0",
+    "@types/node": "^18.11.18",
+    "@types/ws": "^8.5.4",
+    "dotenv": "^16.0.3",
+    "esbuild": "^0.17.3",
+    "graphql-tag": "^2.12.6",
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "watch": "nodemon -w src -w examples -e ts,json,gql,graphql --exec 'npm run build'",
+    "build": "node ./build.mjs",
+    "prepublishOnly": "rm -Rf dist && npm run build"
+  }
+}

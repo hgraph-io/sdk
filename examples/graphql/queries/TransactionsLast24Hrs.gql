@@ -1,0 +1,6 @@
+query TransactionsLast24Hrs {
+  transactions_last_24hrs {
+    count
+    updated_at
+  }
+}
