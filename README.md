@@ -2,7 +2,7 @@
 
 ## Introduction
 
-[Hgraph](https://hgraph.io) provides data and API services. You can sign up for
+[Hgraph](https://hgraph.io) provides data an API services. You can sign up for
 an account at <https://console.hgraph.io>
 
 This SDK intends to make developing with our API fun, fast, and powerful.
