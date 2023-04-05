@@ -23,7 +23,7 @@ using in production, we recommend pinning an exact release.**
 
 ## Installation & Usage
 
-The package can be installed using `npm`, i.e. `npm i @hgraph.io/sdk@0.0.1`. To
+The package can be installed using `npm`, i.e. `npm i --save-exact @hgraph.io/sdk@0.0.1`. To
 install the most current release change `0.0.1` to the most current version.
 
 The default export of the SDK is a function that accepts two parameters. The
