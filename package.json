@@ -2,9 +2,9 @@
   "homepage": "https://hgraph.io",
   "name": "@hgraph.io/sdk",
   "description": "hgraph.io sdk",
-  "version": "0.0.1",
-  "_main": "./src/index.ts",
-  "main": "./dist/sdk/index.js",
+  "version": "0.0.2",
+  "main": "./dist/index.js",
+  "_browser": "./dist/browser/index.js",
   "author": "splash@hgraph.io",
   "license": "MIT",
   "repository": {
