@@ -3,7 +3,10 @@ import jmespath from 'jmespath'
 import * as Hgraph from '../types'
 
 // https://stackoverflow.com/questions/71361951/graphql-tag-how-to-get-the-actual-string-for-the-body-request
-export default async (body: Hgraph.RequestBody, options: Hgraph.RequestOptions) => {
+export default async (
+  body: Hgraph.RequestBody,
+  options: Hgraph.RequestOptions
+) => {
   const {endpoint, headers} = options
 
   const response = await fetch(endpoint, {

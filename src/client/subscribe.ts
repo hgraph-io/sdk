@@ -7,18 +7,15 @@ export default async function subscribe(
   body: SubscribePayload,
   options?: Hgraph.RequestOptions
 ) {
-  const {endpoint, headers, filter} = options
-
-  //https://github.com/enisdenjo/graphql-ws#node-client-headers
-  class HgraphWebSocket extends WebSocket {
-    constructor(address, protocols) {
-      super(address, protocols, {headers})
-    }
-  }
+  const {endpoint, headers, filter, token} = options
 
   const client = createClient({
     url: endpoint,
-    webSocketImpl: HgraphWebSocket,
+    webSocketImpl: WebSocket,
+    connectionParams: {
+      headers,
+      // 	authorization: 'Bearer test'
+    },
   })
 
   return client.subscribe(body, {

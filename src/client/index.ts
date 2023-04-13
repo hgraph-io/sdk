@@ -16,6 +16,11 @@ function normalizeArgs(
   _options?: Hgraph.RequestOptions
 ): {body: FinalRequestBody; options: Hgraph.RequestOptions} {
   const options = _options || {}
+  // throw error if x-api-key header is passed in browser
+  if (options?.headers?.['x-api-key'] && typeof window !== 'undefined')
+    throw new Error(
+      'It appears this is being run in a browser environment and is unsafe. Do not expose private keys on a front end!'
+    )
   const args: {body: FinalRequestBody; options: Hgraph.RequestOptions} = {
     body: undefined,
     options: undefined,
@@ -41,9 +46,10 @@ function normalizeArgs(
     ...options,
 
     endpoint:
-      options.endpoint || args.body.query.trim().startsWith('subscription')
+      options.endpoint ||
+      (args.body.query.trim().startsWith('subscription')
         ? defaultOptions.endpoint.replace('https', 'wss')
-        : defaultOptions.endpoint,
+        : defaultOptions.endpoint),
 
     // make sure we keep the defaults unless they are explicity overridden
     headers: {
