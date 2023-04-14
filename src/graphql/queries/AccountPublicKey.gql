@@ -1,5 +1,0 @@
-query AccountPublicKey($id: bigint!) {
-  entity: entity_by_pk(id: $id) {
-    public_key
-  }
-}

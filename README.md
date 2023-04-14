@@ -8,7 +8,8 @@ an account at <https://console.hgraph.io>
 This SDK intends to make developing with our API fun, fast, and powerful.
 
 If you’re new to GraphQL, you can learn more [GraphQL](https://graphql.org/).
-Then, build queries using and interactive editor at <https://console.hgraph.io/editor>.
+Then, build queries using and interactive editor at
+<https://console.hgraph.io/editor>.
 
 ## Versioning
 
@@ -23,8 +24,9 @@ using in production, we recommend pinning an exact release.**
 
 ## Installation & Usage
 
-The package can be installed using `npm`, i.e. `npm i --save-exact @hgraph.io/sdk@0.0.1`. To
-install the most current release change `0.0.1` to the most current version.
+The package can be installed using `npm`, i.e.
+`npm i --save-exact @hgraph.io/sdk@0.0.1`. To install the most current release
+change `0.0.1` to the most current version.
 
 The default export of the SDK is a function that accepts two parameters. The
 first parameter is a GraphQL query, either a string or an AST using
@@ -161,9 +163,8 @@ and running.
 
 - `gh repo clone hgraph-io/sdk`
 - `npm i`
-- `cp .env.example .env`, then add the `HGRAPH_API_KEY`
 - `npm run watch` : watch for file changes and build on change
-- run the example code `node dist/examples/index.js`
+- depend on local version of sdk by using local dependency: `npi i ../sdk'
 
 ### Debugging
 
