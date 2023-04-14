@@ -5,10 +5,10 @@
   "version": "0.0.4",
   "main": "./dist/node-cjs.js",
   "module": "./dist/node-esm.js",
-	"browser": {
-		"./dist/node-cjs.js": "./dist/browser-cjs.js",
-		"./dist/node-esm.js": "./dist/browser-esm.js"
-	},
+  "browser": {
+    "./dist/node-cjs.js": "./dist/browser-cjs.js",
+    "./dist/node-esm.js": "./dist/browser-esm.js"
+  },
   "author": "splash@hgraph.io",
   "license": "MIT",
   "repository": {
@@ -33,12 +33,15 @@
   ],
   "types": "./index.d.ts",
   "dependencies": {
+    "bufferutil": "^4.0.7",
+    "encoding": "^0.1.13",
     "graphql": "^16.6.0",
     "graphql-ws": "^5.11.3",
     "isomorphic-fetch": "^3.0.0",
     "isomorphic-ws": "^5.0.0",
     "jmespath": "^0.16.0",
-    "json-bigint": "^1.0.0"
+    "json-bigint": "^1.0.0",
+    "utf-8-validate": "^6.0.3"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.36",
