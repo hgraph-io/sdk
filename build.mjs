@@ -1,41 +1,43 @@
 import esbuild from 'esbuild'
-import {globSync} from 'glob'
+
+// https://esbuild.github.io/api/#main-fields-for-package-authors
 
 esbuild.build({
-  entryPoints: globSync('src/**/*.ts'),
-  bundle: false,
-  minify: false,
-  // platform: 'node',
-  // target: ['node16'],
-  outdir: 'dist',
-  loader: {
-    '.gql': 'text',
-  },
+  entryPoints: ['src/index.ts'],
+  bundle: true,
+  minify: true,
+  format: 'cjs',
+  platform: 'node',
+  target: ['node16'],
+  outfile: 'dist/node-cjs.js',
 })
 
-// esbuild.build({
-//   entryPoints: ['src/index.ts'],
-//   bundle: true,
-//   minify: true,
-//   format: 'esm',
-//   target: ['chrome58', 'firefox57', 'safari11'], //support edge?
-//   outfile: 'dist/browser/index.js',
-//   loader: {
-//     '.gql': 'text',
-//   },
-// })
+esbuild.build({
+  entryPoints: ['src/index.ts'],
+  bundle: true,
+  minify: true,
+  format: 'esm',
+  platform: 'node',
+  target: ['node16'],
+  outfile: 'dist/node-esm.js',
+})
 
-//esbuild.build({
-//  entryPoints: globSync('examples/*.ts'),
-//  bundle: true,
-//  platform: 'node',
-//  // minify: true,
-//  //packages: 'external',
-//  //TODO: isomorphic
-//  target: ['node16'],
-//  outdir: 'dist/examples/',
-//  external: ['@hgraph.io/sdk'],
-//  loader: {
-//    '.gql': 'text',
-//  },
-//})
+esbuild.build({
+  entryPoints: ['src/index.ts'],
+  bundle: true,
+  minify: true,
+  format: 'esm',
+  platform: 'browser',
+  target: ['chrome58', 'firefox57', 'safari11', 'edge88'],
+  outfile: 'dist/browser-esm.js',
+})
+
+esbuild.build({
+  entryPoints: ['src/index.ts'],
+  bundle: true,
+  minify: true,
+  format: 'cjs',
+  platform: 'browser',
+  target: ['chrome58', 'firefox57', 'safari11', 'edge88'],
+  outfile: 'dist/browser-cjs.js',
+})
