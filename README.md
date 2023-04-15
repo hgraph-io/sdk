@@ -90,6 +90,12 @@ For front-end solutions, we plan to authenticate using json web tokens. See
 
 ## Examples
 
+The following quick start template repos for different environments are available:
+
+- [node](https://github.com/hgraph-io/nodejs-template)
+- [browser](https://github.com/hgraph-io/browser-template)
+- [nextjs](https://github.com/hgraph-io/nextjs-template)
+
 ### Query
 
 ```typescript
