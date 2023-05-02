@@ -1,0 +1,29 @@
+query AccountTransfers($accountId: bigint!) {
+  entity_by_pk(id: $accountId) {
+    type
+    balance
+    alias
+    public_key
+    transaction(order_by: {consensus_timestamp: desc}) {
+      payer_account_id
+      consensus_timestamp
+      crypto_transfer {
+        amount
+        entity_id
+        payer_account_id
+      }
+      nft_transfer {
+        token_id
+        serial_number
+        sender_account_id
+        receiver_account_id
+      }
+      token_transfer {
+        account_id
+        amount
+        payer_account_id
+        token_id
+      }
+    }
+  }
+}
