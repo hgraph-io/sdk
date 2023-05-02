@@ -2,10 +2,18 @@ import esbuild from 'esbuild'
 
 // https://esbuild.github.io/api/#main-fields-for-package-authors
 
-esbuild.build({
+const common = {
   entryPoints: ['src/index.ts'],
   bundle: true,
   minify: true,
+  loader: {
+    '.gql': 'text',
+    '.graphql': 'text',
+  },
+}
+
+esbuild.build({
+  ...common,
   format: 'cjs',
   platform: 'node',
   target: ['node16'],
@@ -13,9 +21,7 @@ esbuild.build({
 })
 
 esbuild.build({
-  entryPoints: ['src/index.ts'],
-  bundle: true,
-  minify: true,
+  ...common,
   format: 'esm',
   platform: 'node',
   target: ['node16'],
@@ -23,9 +29,7 @@ esbuild.build({
 })
 
 esbuild.build({
-  entryPoints: ['src/index.ts'],
-  bundle: true,
-  minify: true,
+  ...common,
   format: 'esm',
   platform: 'browser',
   target: ['chrome58', 'firefox57', 'safari11', 'edge88'],
@@ -33,9 +37,7 @@ esbuild.build({
 })
 
 esbuild.build({
-  entryPoints: ['src/index.ts'],
-  bundle: true,
-  minify: true,
+  ...common,
   format: 'cjs',
   platform: 'browser',
   target: ['chrome58', 'firefox57', 'safari11', 'edge88'],
