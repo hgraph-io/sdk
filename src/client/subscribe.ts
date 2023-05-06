@@ -1,6 +1,5 @@
 import WebSocket from 'isomorphic-ws'
 import {createClient, SubscribePayload} from 'graphql-ws'
-import jmespath from 'jmespath'
 import * as Hgraph from '../types'
 
 export default async function subscribe(
@@ -19,7 +18,7 @@ export default async function subscribe(
   })
 
   return client.subscribe(body, {
-    next: (data) => options.next(filter ? jmespath.search(data, filter) : data),
+    next: options.next,
     error: options.error || ((e) => console.error(e)),
     complete: options.complete || (() => {}),
   })

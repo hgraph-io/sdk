@@ -60,17 +60,13 @@ await hg(query, options)
 ### Configuration options
 
 The second parameter passed to the hg function accepts a configuration object.
-This is used for authentication as setting additional headers. Additionally,
-there is a helper function that filters data returned from the API using
-[jmespath](https://jmespath.org/).
-
+This is used for authentication as setting additional headers.
 ```typescript
 {
   headers: {
     'x-api-key': '<HGRAPH_API_KEY>', // from https://console.hgraph.io
     'x-hgraph-network': 'hedera-mainnet' // default Network.HederaMainnet, see src/types.ts & src/defaultOptions.ts
   },
-  filter: '<String filter accepted by jmespath>', // default undefined
   endpoint: 'https://api.hgraph.dev/v1/graphql', // default
 }
 
@@ -139,11 +135,8 @@ subscription LatestTransaction {
 
 async function main() {
   const unsubscribe = await hg(LatestTransaction, {
-    // The client supports filtering the response date using jmespath -  https://jmespath.org/
-    filter: 'data.transaction[0].consensus_timestamp',
-    next: (data: bigint) => {
-      const diff = (BigInt(new Date().getTime()) - data / 1000000n) / 1000n
-      console.log(`consensus_timestamp was about ${diff} seconds ago`)
+    next: (data) => {
+      console.log(data)
     },
     error: (e: string) => {
       console.error(e)

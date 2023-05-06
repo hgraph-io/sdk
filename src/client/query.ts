@@ -1,12 +1,12 @@
-import fetch from 'isomorphic-fetch'
 import jmespath from 'jmespath'
+import {fetch} from './utils'
 import * as Hgraph from '../types'
 
 // https://stackoverflow.com/questions/71361951/graphql-tag-how-to-get-the-actual-string-for-the-body-request
-export default async (
+export default async function query(
   body: Hgraph.RequestBody,
   options: Hgraph.RequestOptions
-) => {
+) {
   const {endpoint, headers} = options
 
   const response = await fetch(endpoint, {

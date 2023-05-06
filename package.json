@@ -39,13 +39,11 @@
     "graphql-ws": "^5.11.3",
     "isomorphic-fetch": "^3.0.0",
     "isomorphic-ws": "^5.0.0",
-    "jmespath": "^0.16.0",
     "json-bigint": "^1.0.0",
     "utf-8-validate": "^6.0.3"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.36",
-    "@types/jmespath": "^0.15.0",
     "@types/node": "^18.11.18",
     "esbuild": "^0.17.16",
     "nodemon": "^2.0.20"
