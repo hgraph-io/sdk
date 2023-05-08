@@ -5,38 +5,34 @@ import {
   Network,
   Environment,
   ClientOptions,
-  RequestBody,
+  FlexibleRequestBody,
   SubscriptionHandlers,
 } from '../types'
-import {stringify, parse} from './utils'
+import {stringify, parse, formatRequestBody} from './utils'
 
 export default function Client(options?: ClientOptions) {
+  /*
+   * Shared properties for queries & subscriptions
+   */
   const endpoint = `https://${
     options?.network || Network.HederaTestnet
   }.api.hgraph.${options?.environment || Environment.Development}/v1/graphql`
 
-  const subscriptionClient = createClient({
-    url: endpoint.replace('https', 'wss'),
-    webSocketImpl: WebSocket,
-    connectionParams: {
-      'content-type': 'application/json',
-      ...(options?.token && {authorization: `Bearer ${options.token}`}),
-      ...(options?.headers ?? {}),
-    },
-  })
+  const headers = {
+    'content-type': 'application/json',
+    ...(options?.headers ?? {}),
+    ...(options?.token && {authorization: `Bearer ${options.token}`}),
+  }
 
-  this.query = async function (body: RequestBody) {
+  /*
+   * Query
+   */
+  this.query = async function (flexibleRequestBody: FlexibleRequestBody) {
+    const body = formatRequestBody(flexibleRequestBody)
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        ...(options?.headers ?? {}),
-      },
-      body: stringify({
-        query: body.query,
-        variables: body.variables,
-        operationName: body.operationName,
-      }),
+      headers,
+      body: stringify(body),
     })
 
     if (!response.ok)
@@ -45,10 +41,22 @@ export default function Client(options?: ClientOptions) {
     return parse(await response.text())
   }
 
+  /*
+   * Subscription
+   */
+  const subscriptionClient = createClient({
+    url: endpoint.replace('https', 'wss'),
+    webSocketImpl: WebSocket,
+    connectionParams: headers,
+    jsonMessageReviver: parse,
+    jsonMessageReplacer: stringify,
+  })
+
   this.subscribe = function (
-    body: RequestBody,
+    flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
   ) {
+    const body = formatRequestBody(flexibleRequestBody)
     return subscriptionClient.subscribe(body, handlers)
   }
 }

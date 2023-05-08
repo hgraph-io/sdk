@@ -1,5 +1,9 @@
+import {ExecutionResult, GraphQLError} from 'graphql'
 import {DocumentNode} from 'graphql/language/ast'
 
+/*
+ * Client setup
+ */
 export const enum Network {
   HederaMainnet = 'mainnet.hedera',
   HederaTestnet = 'testnet.hedera',
@@ -19,17 +23,31 @@ export interface ClientOptions {
   }
 }
 
-//https://graphql.org/learn/serving-over-http/#post-request
-export interface _RequestBody {
+/*
+ * Requests
+ */
+
+// Flexible arguments for client.query() & client.subscribe()
+export type FlexibleRequestBody = string | DocumentNode | RequestBody
+
+export interface RequestBody {
   query: string | DocumentNode
   operationName?: string
   variables?: Record<string, unknown>
+  extensions?: Record<string, unknown>
+}
+// GraphQL request payload
+// https://graphql.org/learn/serving-over-http/#post-request
+export interface GraphQLRequestPayload extends RequestBody {
+  query: string
 }
 
-export type RequestBody = _RequestBody | DocumentNode | string
-
+/*
+ * Responses
+ */
+// https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md
 export interface SubscriptionHandlers {
-  next?: (data: any) => void
-  error?: (err: any) => void
-  complete?: () => void
+  next: (data: ExecutionResult) => void
+  error: (err: GraphQLError[]) => void
+  complete: () => void
 }
