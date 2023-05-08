@@ -1,27 +1,35 @@
 import {DocumentNode} from 'graphql/language/ast'
 
 export const enum Network {
-  HederaMainnet = 'hedera-mainnet',
-  HederaTestnet = 'hedera-testnet',
+  HederaMainnet = 'mainnet.hedera',
+  HederaTestnet = 'testnet.hedera',
 }
 
-//https://graphql.org/learn/serving-over-http/#post-request
-export interface RequestBody {
-  operationName?: string
-  query?: string | DocumentNode
-  variables?: Record<string, unknown>
+export const enum Environment {
+  Development = 'dev',
+  Production = 'io',
 }
 
-export interface RequestOptions {
+export interface ClientOptions {
   network?: Network
-  endpoint?: string
-  token?: string // jwt; if there's no token only public whitelisted queries allowed (currently none) w/ shared limit
-  filter?: string //jmespath
-  //TODO: these are probably not any?
-  next?: (data: any) => void //TODO: no a
-  error?: (err: any) => void //TODO:
-  complete?: () => void //TODO:
+  environment?: Environment
+  token?: string // jwt
   headers?: {
     [index: string]: string
   }
+}
+
+//https://graphql.org/learn/serving-over-http/#post-request
+export interface _RequestBody {
+  query: string | DocumentNode
+  operationName?: string
+  variables?: Record<string, unknown>
+}
+
+export type RequestBody = _RequestBody | DocumentNode | string
+
+export interface SubscriptionHandlers {
+  next?: (data: any) => void
+  error?: (err: any) => void
+  complete?: () => void
 }

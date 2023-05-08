@@ -1,1 +1,1 @@
-export {fetch} from './jsonBigInt'
+export {stringify, parse} from './jsonBigInt'
