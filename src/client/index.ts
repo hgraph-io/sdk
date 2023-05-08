@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import WebSocket from 'isomorphic-ws'
-import {createClient} from 'graphql-ws'
+import {createClient, Client as SubscriptionClient} from 'graphql-ws'
 import {
   Network,
   Environment,
@@ -10,28 +10,40 @@ import {
 } from '../types'
 import {stringify, parse, formatRequestBody} from './utils'
 
-export default function Client(options?: ClientOptions) {
-  /*
-   * Shared properties for queries & subscriptions
-   */
-  const endpoint = `https://${
-    options?.network || Network.HederaTestnet
-  }.api.hgraph.${options?.environment || Environment.Development}/v1/graphql`
+// generate types
+//https://github.com/evanw/esbuild/issues/95#issuecomment-1007485134
+export default class Client {
+  endpoint: string
+  headers: Record<string, string>
+  subscriptionClient: SubscriptionClient
 
-  const headers = {
-    'content-type': 'application/json',
-    ...(options?.headers ?? {}),
-    ...(options?.token && {authorization: `Bearer ${options.token}`}),
+  constructor(options?: ClientOptions) {
+    this.endpoint = `https://${
+      options?.network || Network.HederaTestnet
+    }.api.hgraph.${options?.environment || Environment.Development}/v1/graphql`
+
+    this.headers = {
+      'content-type': 'application/json',
+      ...(options?.headers ?? {}),
+      ...(options?.token && {authorization: `Bearer ${options.token}`}),
+    }
+    this.subscriptionClient = createClient({
+      url: this.endpoint.replace('https', 'wss'),
+      webSocketImpl: WebSocket,
+      connectionParams: this.headers,
+      jsonMessageReviver: parse,
+      jsonMessageReplacer: stringify,
+    })
   }
 
   /*
    * Query
    */
-  this.query = async function (flexibleRequestBody: FlexibleRequestBody) {
+  async query(flexibleRequestBody: FlexibleRequestBody) {
     const body = formatRequestBody(flexibleRequestBody)
-    const response = await fetch(endpoint, {
+    const response = await fetch(this.endpoint, {
       method: 'POST',
-      headers,
+      headers: this.headers,
       body: stringify(body),
     })
 
@@ -44,19 +56,11 @@ export default function Client(options?: ClientOptions) {
   /*
    * Subscription
    */
-  const subscriptionClient = createClient({
-    url: endpoint.replace('https', 'wss'),
-    webSocketImpl: WebSocket,
-    connectionParams: headers,
-    jsonMessageReviver: parse,
-    jsonMessageReplacer: stringify,
-  })
-
-  this.subscribe = function (
+  subscribe(
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
   ) {
     const body = formatRequestBody(flexibleRequestBody)
-    return subscriptionClient.subscribe(body, handlers)
+    return this.subscriptionClient.subscribe(body, handlers)
   }
 }

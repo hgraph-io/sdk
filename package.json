@@ -47,11 +47,13 @@
     "@types/json-bigint": "^1.0.1",
     "@types/node": "^18.11.18",
     "esbuild": "^0.17.16",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "typedoc": "^0.24.7"
   },
   "scripts": {
     "watch": "nodemon -w src -w examples -e ts,json,gql,graphql --exec 'npm run build'",
     "build": "node ./build.mjs",
+		"declare-types": "tsc --emitDeclarationOnly --declaration --outDir dist",
     "prepublishOnly": "rm -Rf dist && npm run build"
   }
 }
