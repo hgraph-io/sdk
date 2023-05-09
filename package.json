@@ -55,6 +55,6 @@
     "watch": "nodemon -w src -e ts,json,gql,graphql --exec 'npm run build'",
     "build": "node ./build.mjs",
     "declare-types": "npm-dts generate --output dist/index.d.ts",
-    "prepublishOnly": "rm -Rf dist && npm declare-types && npm run build"
+    "prepublishOnly": "rm -Rf dist && npm run declare-types && npm run build"
   }
 }
