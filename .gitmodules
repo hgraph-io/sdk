@@ -1,0 +1,3 @@
+[submodule "graphql-ws"]
+	path = graphql-ws
+	url = https://github.com/hgraphql/graphql-ws.git

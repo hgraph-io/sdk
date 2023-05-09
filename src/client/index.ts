@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import WebSocket from 'isomorphic-ws'
-import {createClient, Client as SubscriptionClient} from 'graphql-ws'
+import {createClient, Client as SubscriptionClient} from '../../graphql-ws/src'
 import {
   Network,
   Environment,
@@ -8,7 +8,7 @@ import {
   FlexibleRequestBody,
   SubscriptionHandlers,
 } from '../types'
-import {stringify, parse, formatRequestBody} from './utils'
+import {stringify, parse, patchBigIntToJSON, formatRequestBody} from './utils'
 
 // generate types
 //https://github.com/evanw/esbuild/issues/95#issuecomment-1007485134
@@ -18,6 +18,9 @@ export default class Client {
   subscriptionClient: SubscriptionClient
 
   constructor(options?: ClientOptions) {
+    // add to BigInt prototype for JSON.stringify
+    if (options?.patchBigIntToJSON !== false) patchBigIntToJSON()
+
     this.endpoint = `https://${
       options?.network || Network.HederaTestnet
     }.api.hgraph.${options?.environment || Environment.Development}/v1/graphql`
@@ -31,8 +34,7 @@ export default class Client {
       url: this.endpoint.replace('https', 'wss'),
       webSocketImpl: WebSocket,
       connectionParams: this.headers,
-      jsonMessageReviver: parse,
-      jsonMessageReplacer: stringify,
+      jsonParse: parse,
     })
   }
 

@@ -5,8 +5,10 @@ import {DocumentNode} from 'graphql/language/ast'
  * Client setup
  */
 export const enum Network {
-  HederaMainnet = 'mainnet.hedera',
-  HederaTestnet = 'testnet.hedera',
+  HederaMainnet = 'mainnet',
+  HederaTestnet = 'testnet',
+  // HederaMainnet = 'mainnet.hedera',
+  // HederaTestnet = 'testnet.hedera',
 }
 
 export const enum Environment {
@@ -21,6 +23,7 @@ export interface ClientOptions {
   headers?: {
     [index: string]: string
   }
+  patchBigIntToJSON?: boolean
 }
 
 /*
