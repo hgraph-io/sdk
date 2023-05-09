@@ -1,5 +1,6 @@
 import {ExecutionResult, GraphQLError} from 'graphql'
 import {DocumentNode} from 'graphql/language/ast'
+import {Client as SubscriptionClient} from '../../graphql-ws/src'
 
 /*
  * Client setup
@@ -20,12 +21,20 @@ export interface ClientOptions {
   network?: Network
   environment?: Environment
   token?: string // jwt
-  headers?: {
-    [index: string]: string
-  }
+  headers?: Record<string, string>
   patchBigIntToJSON?: boolean
 }
 
+export interface Client {
+  endpoint: string
+  headers: Record<string, string>
+  subscriptionClient: SubscriptionClient
+  query: (flexibleRequestBody: FlexibleRequestBody) => any
+  subscribe: (
+    flexibleRequestBody: FlexibleRequestBody,
+    handlers: SubscriptionHandlers
+  ) => () => void
+}
 /*
  * Requests
  */

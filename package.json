@@ -31,7 +31,7 @@
     "decentralized",
     "dao"
   ],
-  "types": "./index.d.ts",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "bufferutil": "^4.0.7",
     "encoding": "^0.1.13",
@@ -48,12 +48,13 @@
     "@types/node": "^18.11.18",
     "esbuild": "^0.17.16",
     "nodemon": "^2.0.20",
+    "npm-dts": "^1.3.12",
     "typedoc": "^0.24.7"
   },
   "scripts": {
-    "watch": "nodemon -w src -w examples -e ts,json,gql,graphql --exec 'npm run build'",
+    "watch": "nodemon -w src -e ts,json,gql,graphql --exec 'npm run build'",
     "build": "node ./build.mjs",
-		"declare-types": "tsc --emitDeclarationOnly --declaration --outDir dist",
-    "prepublishOnly": "rm -Rf dist && npm run build"
+    "declare-types": "npm-dts generate --output dist/index.d.ts",
+    "prepublishOnly": "rm -Rf dist && npm declare-types && npm run build"
   }
 }

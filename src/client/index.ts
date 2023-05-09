@@ -5,6 +5,7 @@ import {
   Network,
   Environment,
   ClientOptions,
+  Client,
   FlexibleRequestBody,
   SubscriptionHandlers,
 } from '../types'
@@ -12,7 +13,7 @@ import {stringify, parse, patchBigIntToJSON, formatRequestBody} from './utils'
 
 // generate types
 //https://github.com/evanw/esbuild/issues/95#issuecomment-1007485134
-export default class Client {
+export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
