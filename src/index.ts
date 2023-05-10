@@ -1,4 +1,4 @@
 import client from './client'
 
-export * as lib from './graphql'
+export * from './types'
 export default client

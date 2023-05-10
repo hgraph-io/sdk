@@ -1,27 +1,78 @@
+import {ExecutionResult, GraphQLError} from 'graphql'
 import {DocumentNode} from 'graphql/language/ast'
+import {Client as SubscriptionClient} from '../../graphql-ws/src'
 
-export const enum Network {
-  HederaMainnet = 'hedera-mainnet',
-  HederaTestnet = 'hedera-testnet',
+/*
+ * Client setup
+ */
+export enum Network {
+  HederaMainnet = 'mainnet',
+  HederaTestnet = 'testnet',
+  // HederaMainnet = 'mainnet.hedera',
+  // HederaTestnet = 'testnet.hedera',
 }
 
-//https://graphql.org/learn/serving-over-http/#post-request
-export interface RequestBody {
-  operationName?: string
-  query?: string | DocumentNode
-  variables?: Record<string, unknown>
+export enum Environment {
+  Development = 'dev',
+  Production = 'io',
 }
 
-export interface RequestOptions {
+export interface ClientOptions {
   network?: Network
-  endpoint?: string
-  token?: string // jwt; if there's no token only public whitelisted queries allowed (currently none) w/ shared limit
-  filter?: string //jmespath
-  //TODO: these are probably not any?
-  next?: (data: any) => void //TODO: no a
-  error?: (err: any) => void //TODO:
-  complete?: () => void //TODO:
-  headers?: {
-    [index: string]: string
-  }
+  environment?: Environment
+  token?: string // jwt
+  headers?: Record<string, string>
+  patchBigIntToJSON?: boolean
+}
+
+export interface Client {
+  endpoint: string
+  headers: Record<string, string>
+  subscriptionClient: SubscriptionClient
+  query: (flexibleRequestBody: FlexibleRequestBody) => any
+  subscribe: (
+    flexibleRequestBody: FlexibleRequestBody,
+    handlers: SubscriptionHandlers
+  ) => () => void
+}
+
+export default class HgraphClient implements Client {
+  constructor(options?: ClientOptions)
+  endpoint: string
+  headers: Record<string, string>
+  subscriptionClient: SubscriptionClient
+  query: (flexibleRequestBody: FlexibleRequestBody) => any
+  subscribe: (
+    flexibleRequestBody: FlexibleRequestBody,
+    handlers: SubscriptionHandlers
+  ) => () => void
+}
+
+/*
+ * Requests
+ */
+
+// Flexible arguments for client.query() & client.subscribe()
+export type FlexibleRequestBody = string | DocumentNode | RequestBody
+
+export interface RequestBody {
+  query: string | DocumentNode
+  operationName?: string
+  variables?: Record<string, unknown>
+  extensions?: Record<string, unknown>
+}
+// GraphQL request payload
+// https://graphql.org/learn/serving-over-http/#post-request
+export interface GraphQLRequestPayload extends RequestBody {
+  query: string
+}
+
+/*
+ * Responses
+ */
+// https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md
+export interface SubscriptionHandlers {
+  next: (data: ExecutionResult) => void
+  error: (err: GraphQLError[]) => void
+  complete: () => void
 }

@@ -1,4 +1,5 @@
 import esbuild from 'esbuild'
+import fs from 'fs'
 
 // https://esbuild.github.io/api/#main-fields-for-package-authors
 
@@ -43,3 +44,7 @@ esbuild.build({
   target: ['chrome58', 'firefox57', 'safari11', 'edge88'],
   outfile: 'dist/browser-cjs.js',
 })
+
+// fs.mkdir('dist', console.error)
+fs.mkdir('dist', () => {})
+fs.copyFile('src/types/index.ts', 'dist/index.d.ts', () => {})

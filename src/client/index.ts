@@ -1,74 +1,69 @@
-import {print} from 'graphql/language/printer'
-import {DocumentNode} from 'graphql/language/ast'
-import {SubscribePayload} from 'graphql-ws'
-import * as Hgraph from '../types'
-import './utils/jsonBigInt'
-import query from './query'
-import subscribe from './subscribe'
-import defaultOptions from './defaultOptions'
+import fetch from 'isomorphic-fetch'
+import WebSocket from 'isomorphic-ws'
+import {createClient, Client as SubscriptionClient} from '../../graphql-ws/src'
+import {
+  Network,
+  Environment,
+  ClientOptions,
+  Client,
+  FlexibleRequestBody,
+  SubscriptionHandlers,
+} from '../types'
+import {stringify, parse, patchBigIntToJSON, formatRequestBody} from './utils'
 
-interface FinalRequestBody extends Hgraph.RequestBody {
-  query?: string
-}
+// generate types
+//https://github.com/evanw/esbuild/issues/95#issuecomment-1007485134
+export default class HgraphClient implements Client {
+  endpoint: string
+  headers: Record<string, string>
+  subscriptionClient: SubscriptionClient
 
-function normalizeArgs(
-  body: Hgraph.RequestBody | DocumentNode | String,
-  _options?: Hgraph.RequestOptions
-): {body: FinalRequestBody; options: Hgraph.RequestOptions} {
-  const options = _options || {}
-  // throw error if x-api-key header is passed in browser
-  if (options?.headers?.['x-api-key'] && typeof window !== 'undefined')
-    throw new Error(
-      'It appears this is being run in a browser environment and is unsafe. Do not expose private keys on a front end!'
-    )
-  const args: {body: FinalRequestBody; options: Hgraph.RequestOptions} = {
-    body: undefined,
-    options: undefined,
+  constructor(options?: ClientOptions) {
+    // add to BigInt prototype for JSON.stringify
+    if (options?.patchBigIntToJSON !== false) patchBigIntToJSON()
+
+    this.endpoint = `https://${
+      options?.network || Network.HederaTestnet
+    }.api.hgraph.${options?.environment || Environment.Development}/v1/graphql`
+
+    this.headers = {
+      'content-type': 'application/json',
+      ...(options?.headers ?? {}),
+      ...(options?.token && {authorization: `Bearer ${options.token}`}),
+    }
+    this.subscriptionClient = createClient({
+      url: this.endpoint.replace('https', 'wss'),
+      webSocketImpl: WebSocket,
+      connectionParams: this.headers,
+      jsonParse: parse,
+    })
   }
 
-  if (typeof body === 'string') args.body = {query: body as string}
-  // gql`...`
-  else if ('kind' in body) args.body = {query: print(body)}
-  else if ('query' in body && 'kind' in (body.query as DocumentNode)) {
-    args.body = {query: print(body.query as DocumentNode)}
-  } else if ('query' in body && typeof body.query === 'string') {
-    args.body = body as FinalRequestBody
-  } else throw new Error('The format of the request is malformed')
+  /*
+   * Query
+   */
+  async query(flexibleRequestBody: FlexibleRequestBody) {
+    const body = formatRequestBody(flexibleRequestBody)
+    const response = await fetch(this.endpoint, {
+      method: 'POST',
+      headers: this.headers,
+      body: stringify(body),
+    })
 
-  //@ts-ignore
-  args.body.operationName = body.operationName || options.operationName
-  //@ts-ignore
-  args.body.variables = body.variables || options.variables
+    if (!response.ok)
+      throw new Error(`${response.status} - ${response.statusText}`)
 
-  args.options = {
-    ...defaultOptions,
-    // override defaults
-    ...options,
-
-    endpoint:
-      options.endpoint ||
-      (args.body.query.trim().startsWith('subscription')
-        ? defaultOptions.endpoint.replace('https', 'wss')
-        : defaultOptions.endpoint),
-
-    // make sure we keep the defaults unless they are explicity overridden
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers,
-    },
+    return parse(await response.text())
   }
 
-  return args
-}
-
-export default async (
-  _body: Hgraph.RequestBody | DocumentNode | string,
-  _options?: Hgraph.RequestOptions
-) => {
-  const {body, options} = normalizeArgs(_body, _options)
-
-  // Make a subscription request
-  if (body.query.trim().startsWith('subscription'))
-    return subscribe(body as SubscribePayload, options)
-  else return query(body, options)
+  /*
+   * Subscription
+   */
+  subscribe(
+    flexibleRequestBody: FlexibleRequestBody,
+    handlers: SubscriptionHandlers
+  ) {
+    const body = formatRequestBody(flexibleRequestBody)
+    return this.subscriptionClient.subscribe(body, handlers)
+  }
 }

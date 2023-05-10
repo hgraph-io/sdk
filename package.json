@@ -2,7 +2,7 @@
   "homepage": "https://hgraph.io",
   "name": "@hgraph.io/sdk",
   "description": "hgraph.io sdk",
-  "version": "0.0.6",
+  "version": "0.1.2-1",
   "main": "./dist/node-cjs.js",
   "module": "./dist/node-esm.js",
   "browser": {
@@ -31,7 +31,7 @@
     "decentralized",
     "dao"
   ],
-  "types": "./index.d.ts",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "bufferutil": "^4.0.7",
     "encoding": "^0.1.13",
@@ -39,19 +39,18 @@
     "graphql-ws": "^5.11.3",
     "isomorphic-fetch": "^3.0.0",
     "isomorphic-ws": "^5.0.0",
-    "jmespath": "^0.16.0",
     "json-bigint": "^1.0.0",
     "utf-8-validate": "^6.0.3"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.36",
-    "@types/jmespath": "^0.15.0",
+    "@types/json-bigint": "^1.0.1",
     "@types/node": "^18.11.18",
     "esbuild": "^0.17.16",
     "nodemon": "^2.0.20"
   },
   "scripts": {
-    "watch": "nodemon -w src -w examples -e ts,json,gql,graphql --exec 'npm run build'",
+    "watch": "nodemon -w src -e ts,json,gql,graphql --exec 'npm run build'",
     "build": "node ./build.mjs",
     "prepublishOnly": "rm -Rf dist && npm run build"
   }
