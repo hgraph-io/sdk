@@ -52,6 +52,6 @@
   "scripts": {
     "watch": "nodemon -w src -e ts,json,gql,graphql --exec 'npm run build'",
     "build": "node ./build.mjs",
-    "prepublishOnly": "rm -Rf dist && npm run declare-types && npm run build"
+    "prepublishOnly": "rm -Rf dist && npm run build"
   }
 }
