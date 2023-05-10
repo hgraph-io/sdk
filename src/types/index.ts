@@ -5,14 +5,14 @@ import {Client as SubscriptionClient} from '../../graphql-ws/src'
 /*
  * Client setup
  */
-export const enum Network {
+export enum Network {
   HederaMainnet = 'mainnet',
   HederaTestnet = 'testnet',
   // HederaMainnet = 'mainnet.hedera',
   // HederaTestnet = 'testnet.hedera',
 }
 
-export const enum Environment {
+export enum Environment {
   Development = 'dev',
   Production = 'io',
 }
@@ -35,6 +35,19 @@ export interface Client {
     handlers: SubscriptionHandlers
   ) => () => void
 }
+
+export default class HgraphClient implements Client {
+  constructor(options?: ClientOptions)
+  endpoint: string
+  headers: Record<string, string>
+  subscriptionClient: SubscriptionClient
+  query: (flexibleRequestBody: FlexibleRequestBody) => any
+  subscribe: (
+    flexibleRequestBody: FlexibleRequestBody,
+    handlers: SubscriptionHandlers
+  ) => () => void
+}
+
 /*
  * Requests
  */
