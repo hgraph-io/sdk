@@ -29,7 +29,7 @@ export interface Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  query: (flexibleRequestBody: FlexibleRequestBody) => any
+  query: (flexibleRequestBody: FlexibleRequestBody) => Promise<ExecutionResult>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
@@ -37,11 +37,11 @@ export interface Client {
 }
 
 export default class HgraphClient implements Client {
-  constructor(options?: ClientOptions)
+  // constructor(options?: ClientOptions)
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  query: (flexibleRequestBody: FlexibleRequestBody) => any
+  query: (flexibleRequestBody: FlexibleRequestBody) => Promise<ExecutionResult>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
