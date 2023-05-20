@@ -15,6 +15,7 @@ const common = {
 
 esbuild.build({
   ...common,
+  entryPoints: ['src/server/index.ts'],
   format: 'cjs',
   platform: 'node',
   target: ['node16'],
@@ -23,6 +24,7 @@ esbuild.build({
 
 esbuild.build({
   ...common,
+  entryPoints: ['src/server/index.ts'],
   format: 'esm',
   platform: 'node',
   target: ['node16'],

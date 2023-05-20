@@ -76,3 +76,18 @@ export interface SubscriptionHandlers {
   error: (err: GraphQLError[]) => void
   complete: () => void
 }
+
+/*
+ * Server
+ */
+
+declare function createJws(
+  privateKey: string,
+  accountId: string,
+  options: {
+    network: string
+    audience?: string
+    expirationTime?: string
+    issuer?: string
+  }
+): string
