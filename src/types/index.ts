@@ -90,4 +90,4 @@ declare function createJws(
     expirationTime?: string
     issuer?: string
   }
-): string
+): Promise<string>
