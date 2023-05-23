@@ -14,7 +14,6 @@ import * as jose from 'jose'
 
 //https://github.com/hashgraph/hedera-sdk-js/blob/develop/packages/cryptography/src/Ed25519PrivateKey.js
 //https://github.com/hashgraph/hedera-sdk-js/blob/develop/packages/cryptography/src/Ed25519PublicKey.js
-// const PUBLIC_KEY_DER_PREFIX = '302a300506032b6570032100'
 function createPrivateKey(cryptoAccountPrivateKey: string) {
   if (globalThis.crypto)
     throw new Error('Not supported in a browser environment')
@@ -53,14 +52,6 @@ function createPrivateKey(cryptoAccountPrivateKey: string) {
   )
   keyData.write('04', 12, 1, 'hex')
 
-  // return await crypto.subtle.importKey(
-  //   'Ed25519',
-  //   keyData,
-  //   {name: 'ED25519', namedCurve: 'ED25519'},
-  //   false,
-  //   ['sign']
-  // )
-
   return crypto.createPrivateKey({
     key: keyData,
     format: 'der',
@@ -70,23 +61,21 @@ function createPrivateKey(cryptoAccountPrivateKey: string) {
 
 export default async function createJws(
   cryptoAccountPrivateKey: string,
-  accountId: string,
+  cryptoAccountPublicKey: string,
   options: {
-    audience: string
-    expirationTime: string
-    issuer: string
+    issuer: string // account id
+    claims: Record<string, unknown> // https://tools.ietf.org/html/rfc7519#section-4.1
+    audience: string // https://tools.ietf.org/html/rfc7519#section-4.1.3
+    expirationTime: string // https://tools.ietf.org/html/rfc7519#section-4.1.4
   }
 ) {
   const keyLike = await createPrivateKey(cryptoAccountPrivateKey)
+  const {claims, issuer, audience, expirationTime} = options
 
-  return {
-    token: await new jose.SignJWT({'urn:example:claim': true})
-      .setProtectedHeader({alg: 'EdDSA', kid: accountId}) // kid account id or public key?
-      .setIssuedAt()
-      // .setIssuer(`https://hgraph.me`)
-      // .setIssuer(options.issuer)
-      // .setAudience(options.audience)
-      // .setExpirationTime(options.expirationTime)
-      .sign(keyLike),
-  }
+  return await new jose.SignJWT(claims)
+    .setProtectedHeader({alg: 'EdDSA', kid: cryptoAccountPublicKey})
+    .setIssuer(issuer)
+    .setAudience(audience)
+    .setExpirationTime(expirationTime)
+    .sign(keyLike)
 }

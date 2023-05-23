@@ -85,9 +85,14 @@ declare function createJws(
   privateKey: string,
   accountId: string,
   options: {
-    network: string
-    audience?: string
-    expirationTime?: string
-    issuer?: string
+    issuer: string // Hedera accound id: https://docs.hedera.com/hedera/core-concepts/accounts/account-properties
+    claims: Record<string, unknown> // https://tools.ietf.org/html/rfc7519#section-4.1
+    audience: string // https://tools.ietf.org/html/rfc7519#section-4.1.3
+    expirationTime: string // https://tools.ietf.org/html/rfc7519#section-4.1.4
   }
 ): Promise<string>
+
+declare function verifyJws(
+  jws: string,
+  cryptoAccountPublicKey: string
+): Promise<unknown>
