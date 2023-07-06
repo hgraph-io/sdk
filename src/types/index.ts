@@ -29,7 +29,7 @@ export interface Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  query: (flexibleRequestBody: FlexibleRequestBody) => any
+  query: (flexibleRequestBody: FlexibleRequestBody) => Promise<ExecutionResult>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
@@ -37,11 +37,11 @@ export interface Client {
 }
 
 export default class HgraphClient implements Client {
-  constructor(options?: ClientOptions)
+  // constructor(options?: ClientOptions)
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  query: (flexibleRequestBody: FlexibleRequestBody) => any
+  query: (flexibleRequestBody: FlexibleRequestBody) => Promise<ExecutionResult>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
@@ -76,3 +76,23 @@ export interface SubscriptionHandlers {
   error: (err: GraphQLError[]) => void
   complete: () => void
 }
+
+/*
+ * Server
+ */
+
+declare function createJws(
+  privateKey: string,
+  accountId: string,
+  options: {
+    issuer: string // Hedera accound id: https://docs.hedera.com/hedera/core-concepts/accounts/account-properties
+    claims: Record<string, unknown> // https://tools.ietf.org/html/rfc7519#section-4.1
+    audience: string // https://tools.ietf.org/html/rfc7519#section-4.1.3
+    expirationTime: string // https://tools.ietf.org/html/rfc7519#section-4.1.4
+  }
+): Promise<string>
+
+declare function verifyJws(
+  jws: string,
+  cryptoAccountPublicKey: string
+): Promise<unknown>
