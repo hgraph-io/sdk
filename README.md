@@ -38,7 +38,8 @@ each request.
 #### Using a JWT
 
 For front-end solutions, we plan to authenticate using json web tokens. See
-<https://jwt.io/>. Currently, this functionality is limited.
+<https://jwt.io/>. Currently, this functionality is limited, please reach out to
+use to utilize this functionality.
 
 ## Examples
 
