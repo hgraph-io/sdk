@@ -11,12 +11,42 @@ import {
 } from '../types'
 import {stringify, parse, patchBigIntToJSON, formatRequestBody} from './utils'
 
+async function query(flexibleRequestBody: FlexibleRequestBody) {
+  const body = formatRequestBody(flexibleRequestBody)
+  const response = await fetch(this.endpoint, {
+    method: 'POST',
+    headers: this.headers,
+    body: stringify(body),
+  })
+
+  if (!response.ok)
+    throw new Error(`${response.status} - ${response.statusText}`)
+
+  return parse(await response.text())
+}
+
+/*
+ * Subscription
+ */
+function subscribe(
+  flexibleRequestBody: FlexibleRequestBody,
+  handlers: SubscriptionHandlers
+) {
+  const body = formatRequestBody(flexibleRequestBody)
+  return this.subscriptionClient.subscribe(body, handlers)
+}
+
 // generate types
 //https://github.com/evanw/esbuild/issues/95#issuecomment-1007485134
 export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
+  query: (flexibleRequestBody: FlexibleRequestBody) => Promise<any>
+  subscribe: (
+    flexibleRequestBody: FlexibleRequestBody,
+    handlers: SubscriptionHandlers
+  ) => () => void
 
   constructor(options?: ClientOptions) {
     // add to BigInt prototype for JSON.stringify
@@ -37,33 +67,7 @@ export default class HgraphClient implements Client {
       connectionParams: this.headers,
       jsonParse: parse,
     })
-  }
-
-  /*
-   * Query
-   */
-  async query(flexibleRequestBody: FlexibleRequestBody) {
-    const body = formatRequestBody(flexibleRequestBody)
-    const response = await fetch(this.endpoint, {
-      method: 'POST',
-      headers: this.headers,
-      body: stringify(body),
-    })
-
-    if (!response.ok)
-      throw new Error(`${response.status} - ${response.statusText}`)
-
-    return parse(await response.text())
-  }
-
-  /*
-   * Subscription
-   */
-  subscribe(
-    flexibleRequestBody: FlexibleRequestBody,
-    handlers: SubscriptionHandlers
-  ) {
-    const body = formatRequestBody(flexibleRequestBody)
-    return this.subscriptionClient.subscribe(body, handlers)
+    this.query = query.bind(this)
+    this.subscribe = subscribe.bind(this)
   }
 }
