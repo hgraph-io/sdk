@@ -1,1 +1,1 @@
-export {default as stripRealmShard} from './stripRealmShard'
+export {default as stripShardRealm} from './stripShardRealm'
