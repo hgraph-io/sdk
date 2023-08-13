@@ -1,0 +1,12 @@
+query EntityStake($accountId: bigint!) {
+  entity_stake_by_pk(id: $accountId) {
+    decline_reward_start
+    end_stake_period
+    id
+    pending_reward
+    stake_total_start
+    staked_node_id_start
+    staked_to_me
+    timestamp_range
+  }
+}

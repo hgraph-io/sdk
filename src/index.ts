@@ -1,5 +1,3 @@
-import client from './client'
-
 export * from './types'
-
-export default client
+export * from './utils'
+export {default as default} from './client'

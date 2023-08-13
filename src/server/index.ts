@@ -4,6 +4,7 @@ if (typeof window !== 'undefined')
   )
 
 import client from '../client'
+console.log('client', client)
 
 export * from '../types'
 export * from './auth'
