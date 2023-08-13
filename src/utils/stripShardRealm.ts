@@ -1,3 +1,3 @@
 export default function stripShardRealm(accountId: string) {
-  return accountId.split('.')[3]
+  return accountId.split('.')[2]
 }
