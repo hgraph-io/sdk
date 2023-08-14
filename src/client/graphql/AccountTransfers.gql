@@ -1,0 +1,31 @@
+"""
+Get all transfers for an account
+
+"""
+query TransfersByAccount($accountId: bigint!, $limit: Int!, $offset: Int!) {
+  transfer(
+    order_by: {consensus_timestamp: desc}
+    limit: $limit
+    offset: $offset
+    where: {
+      _or: [
+        {receiver_account_id: {_eq: $accountId}}
+        {sender_account_id: {_eq: $accountId}}
+      ]
+    }
+  ) {
+    type
+    serial_number
+    amount
+    sender_account_id
+    receiver_account_id
+    consensus_timestamp
+    token {
+      token_id
+      decimals
+    }
+    # nft {
+    #   metadata
+    # }
+  }
+}

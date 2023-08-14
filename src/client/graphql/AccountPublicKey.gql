@@ -1,0 +1,5 @@
+query AccountPublicKey($accountId: bigint!) {
+  account: entity_by_pk(id: $accountId) {
+    publicKey
+  }
+}
