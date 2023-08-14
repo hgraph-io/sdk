@@ -6,7 +6,7 @@ import fs from 'fs'
 const common = {
   entryPoints: ['src/index.ts'],
   bundle: true,
-  minify: false,
+  minify: true,
   loader: {
     '.gql': 'text',
     '.graphql': 'text',
@@ -16,7 +16,7 @@ const common = {
 esbuild.build({
   ...common,
   entryPoints: ['src/server/index.ts'],
-  // format: 'cjs',
+  format: 'cjs',
   platform: 'node',
   target: ['node18'],
   outfile: 'dist/node-cjs.js',
