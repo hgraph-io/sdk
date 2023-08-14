@@ -69,6 +69,12 @@ export interface GraphQLRequestPayload extends RequestBody {
 }
 
 /*
+ * Utils
+ */
+
+declare function stripShardRealm(accountId: string): number
+
+/*
  * Responses
  */
 // https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md
