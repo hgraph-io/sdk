@@ -42,7 +42,9 @@ export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  query: (flexibleRequestBody: FlexibleRequestBody) => Promise<ExecutionResult>
+  query: <T>(
+    flexibleRequestBody: FlexibleRequestBody
+  ) => Promise<ExecutionResult<T>>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
