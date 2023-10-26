@@ -30,7 +30,9 @@ export interface Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  query: (flexibleRequestBody: FlexibleRequestBody) => Promise<ExecutionResult>
+  query: <T>(
+    flexibleRequestBody: FlexibleRequestBody
+  ) => Promise<ExecutionResult<T>>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
@@ -42,7 +44,9 @@ export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  query: (flexibleRequestBody: FlexibleRequestBody) => Promise<ExecutionResult>
+  query: <T>(
+    flexibleRequestBody: FlexibleRequestBody
+  ) => Promise<ExecutionResult<T>>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
@@ -79,7 +83,7 @@ declare function stripShardRealm(accountId: string): number
  */
 // https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md
 export interface SubscriptionHandlers {
-  next: (data: ExecutionResult) => void
+  next: <T>(data: ExecutionResult<T>) => void
   error: (err: GraphQLError[]) => void
   complete: () => void
 }
