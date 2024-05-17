@@ -31,7 +31,8 @@ export interface Client {
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
   query: <T>(
-    flexibleRequestBody: FlexibleRequestBody
+    flexibleRequestBody: FlexibleRequestBody,
+    abortSignal?: AbortSignal
   ) => Promise<ExecutionResult<T>>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
@@ -45,7 +46,8 @@ export default class HgraphClient implements Client {
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
   query: <T>(
-    flexibleRequestBody: FlexibleRequestBody
+    flexibleRequestBody: FlexibleRequestBody,
+    abortSignal?: AbortSignal
   ) => Promise<ExecutionResult<T>>
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,

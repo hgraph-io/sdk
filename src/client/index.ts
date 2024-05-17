@@ -51,12 +51,13 @@ export default class HgraphClient implements Client {
     })
   }
 
-  async query(flexibleRequestBody: FlexibleRequestBody) {
+  async query(flexibleRequestBody: FlexibleRequestBody, abortSignal?: AbortSignal) {
     const body = formatRequestBody(flexibleRequestBody)
     const response = await fetch(this.endpoint, {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify(body),
+      signal: abortSignal,
     })
 
     if (!response.ok)
