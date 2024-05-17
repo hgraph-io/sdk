@@ -1,3 +1,5 @@
 export * from './types'
 export * from './utils'
 export {default as default} from './client'
+export {useHgraph} from './hooks/useHgraph'
+export {HgraphProvider} from './context/HgraphProvider'

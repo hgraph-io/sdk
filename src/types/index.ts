@@ -1,6 +1,24 @@
+import React from 'react'
 import {ExecutionResult, GraphQLError} from 'graphql'
 import {DocumentNode} from 'graphql/language/ast'
 import {Client as SubscriptionClient} from '../../graphql-ws/src'
+import {useHgraph} from '../hooks/useHgraph'
+import {HgraphProvider} from '../context/HgraphProvider'
+export {useHgraph, HgraphProvider}
+/*
+ * HgraphProvider
+ */
+
+export interface HgraphProviderProps<HgraphInstance> {
+  client: HgraphInstance
+  children: React.ReactNode | React.ReactNode[] | null
+}
+
+export interface HgraphContextValue {
+  client: Client
+}
+
+export declare const HgraphContext: React.Context<HgraphContextValue | null>
 
 /*
  * Client setup
