@@ -9,7 +9,7 @@
     "./dist/node-cjs.js": "./dist/browser-cjs.js",
     "./dist/node-esm.js": "./dist/browser-esm.js"
   },
-  "author": "splash@hgraph.io",
+  "author": "Tyler McDonald <tyler@hgraph.io> (https://hgraph.com)",
   "license": "MIT",
   "repository": {
     "type": "git",

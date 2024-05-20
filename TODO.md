@@ -1,4 +1,0 @@
-# TODO:
-
-- [ ] CONTRIBUTING.md
-- [ ] schema
