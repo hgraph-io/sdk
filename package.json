@@ -2,7 +2,7 @@
   "homepage": "https://hgraph.io",
   "name": "@hgraph.io/sdk",
   "description": "hgraph.io sdk",
-  "version": "0.4.3-0",
+  "version": "0.5.0",
   "main": "./dist/node-cjs.js",
   "module": "./dist/node-esm.js",
   "browser": {
@@ -54,7 +54,6 @@
     "esbuild": "^0.19.1",
     "nodemon": "^2.0.20"
   },
-
   "scripts": {
     "watch": "nodemon -w src -e ts,json,gql,graphql --exec 'npm run build'",
     "build": "node ./build.mjs",
