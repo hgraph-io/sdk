@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import jsonBigint from 'json-bigint'
 import WebSocket from 'isomorphic-ws'
 import {createClient, Client as SubscriptionClient} from '../../graphql-ws/src'
 import {
@@ -10,6 +11,10 @@ import {
   SubscriptionHandlers,
 } from '../types'
 import {formatRequestBody} from './utils'
+
+const {parse} = jsonBigint({
+  useNativeBigInt: true,
+})
 
 // generate types
 //https://github.com/evanw/esbuild/issues/95#issuecomment-1007485134
@@ -38,11 +43,6 @@ export default class HgraphClient implements Client {
       ...(options?.token && {authorization: `Bearer ${options.token}`}),
     }
 
-    // This library gets exported as default in nextjs in cjs environment if instantiating at root level (outside of this function)
-    const {parse} = require('json-bigint')({
-      useNativeBigInt: true,
-    })
-
     this.subscriptionClient = createClient({
       url: this.endpoint.replace('https', 'wss'),
       webSocketImpl: WebSocket,
@@ -51,7 +51,10 @@ export default class HgraphClient implements Client {
     })
   }
 
-  async query(flexibleRequestBody: FlexibleRequestBody, abortSignal?: AbortSignal) {
+  async query(
+    flexibleRequestBody: FlexibleRequestBody,
+    abortSignal?: AbortSignal
+  ) {
     const body = formatRequestBody(flexibleRequestBody)
     const response = await fetch(this.endpoint, {
       method: 'POST',
@@ -62,11 +65,6 @@ export default class HgraphClient implements Client {
 
     if (!response.ok)
       throw new Error(`${response.status} - ${response.statusText}`)
-
-    // This library gets exported as default in nextjs in cjs environment if instantiating at root level (outside of this function)
-    const {parse} = require('json-bigint')({
-      useNativeBigInt: true,
-    })
 
     return parse(await response.text())
   }
