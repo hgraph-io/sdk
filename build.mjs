@@ -11,7 +11,6 @@ const common = {
     '.gql': 'text',
     '.graphql': 'text',
   },
-  external: ['react', 'react-dom'],
 }
 
 esbuild.build({
@@ -30,6 +29,7 @@ esbuild.build({
   platform: 'node',
   target: ['node18'],
   outfile: 'dist/node-esm.js',
+  packages: 'external',
 })
 
 esbuild.build({
@@ -39,6 +39,7 @@ esbuild.build({
   target: ['chrome58', 'firefox57', 'safari11', 'edge88'],
   outfile: 'dist/browser-esm.js',
   jsx: 'automatic',
+  external: ['react', 'react-dom'],
 })
 
 esbuild.build({
