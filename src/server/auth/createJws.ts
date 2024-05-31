@@ -14,11 +14,11 @@ import * as jose from 'jose'
 
 //https://github.com/hashgraph/hedera-sdk-js/blob/develop/packages/cryptography/src/Ed25519PrivateKey.js
 //https://github.com/hashgraph/hedera-sdk-js/blob/develop/packages/cryptography/src/Ed25519PublicKey.js
-function createPrivateKey(cryptoAccountPrivateKey: string) {
+async function createPrivateKey(cryptoAccountPrivateKey: string) {
   if (globalThis.crypto)
     throw new Error('Not supported in a browser environment')
 
-  const crypto = require('node:crypto')
+  const crypto = await import('node:crypto');
 
   // asn
   const OneAsymmetricKey = asn.define('OneAsymmetricKey', function () {
