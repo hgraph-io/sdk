@@ -56,6 +56,10 @@ export interface Client {
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
   ) => () => void
+  patchedSubscribe: (
+    flexibleRequestBody: FlexibleRequestBody,
+    handlers: PatchedSubscriptionHandlers
+  ) => () => void
 }
 
 export default class HgraphClient implements Client {
@@ -70,6 +74,10 @@ export default class HgraphClient implements Client {
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
+  ) => () => void
+  patchedSubscribe: (
+    flexibleRequestBody: FlexibleRequestBody,
+    handlers: PatchedSubscriptionHandlers
   ) => () => void
 }
 
@@ -97,6 +105,27 @@ export interface GraphQLRequestPayload extends RequestBody {
  */
 
 declare function stripShardRealm(accountId: string): number
+
+/*
+ * JSON Patch Operation
+ */
+export interface PatchOperation {
+  op: 'add' | 'remove' | 'replace'
+  path: string // https://datatracker.ietf.org/doc/html/rfc6901
+  value: any
+}
+
+/*
+ * Responses for patchedSubscribe
+ */
+// https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md 
+// https://datatracker.ietf.org/doc/html/rfc6902
+export interface PatchedSubscriptionHandlers {
+  next: <TData,TExtension>(data: ExecutionResult<TData,TExtension>, patches: PatchOperation[]) => void
+  error: (err: GraphQLError[]) => void
+  complete: () => void
+}
+
 
 /*
  * Responses
