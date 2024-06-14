@@ -1,0 +1,16 @@
+query ContractEventLogs($contract_id: bigint!, $limit: Int = 10, $offset: Int = 0, $order: order_by = desc) {
+  logs: contract_log(
+    where: {
+      contract_id: {_eq: $contract_id}
+    }
+    order_by: {consensus_timestamp: $order}
+    limit: $limit
+    offset: $offset
+  ) {
+    data
+    topic0
+    topic1
+    topic2
+    topic3
+  }
+}

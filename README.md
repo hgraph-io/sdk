@@ -60,7 +60,7 @@ and running.
 - `gh repo clone hgraph-io/sdk`
 - `npm i`
 - `npm run watch` : watch for file changes and build on change
-- depend on local version of sdk by using local dependency: `npi i ../sdk'
+- depend on local version of sdk by using local dependency: `npm i ../sdk'
 
 ### Debugging
 
