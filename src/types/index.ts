@@ -1,10 +1,20 @@
 import React from 'react'
 import {ExecutionResult, GraphQLError} from 'graphql'
+import {Contract as EthersContract, InterfaceAbi, LogDescription as EventLogDescription} from 'ethers'
 import {DocumentNode} from 'graphql/language/ast'
 import {Client as SubscriptionClient} from '../../graphql-ws/src'
 import {useHgraph} from '../hooks/useHgraph'
 import {HgraphProvider} from '../context/HgraphProvider'
+
 export {useHgraph, HgraphProvider}
+export {Contract as EthersContract, InterfaceAbi, LogDescription as EventLogDescription} from 'ethers'
+
+/*
+ * Common
+ */
+export type Order = 'asc' | 'desc';
+
+
 /*
  * HgraphProvider
  */
@@ -79,6 +89,38 @@ export default class HgraphClient implements Client {
     flexibleRequestBody: FlexibleRequestBody,
     handlers: PatchedSubscriptionHandlers
   ) => () => void
+}
+
+/*
+ * Contract setup
+ */
+export interface ContractOptions {
+  contractId: string;
+  abi: InterfaceAbi;
+  client: HgraphClient;
+}
+
+export interface Contract {
+  contractId: string;
+  abi: InterfaceAbi;
+  client: HgraphClient;
+  queryEvents: (ContractQueryEventsParams) => Promise<EventLogDescription[]>
+}
+
+export interface ContractQueryEventsParams {
+  limit?: number;
+  offset?: number;
+  order?: Order;
+}
+
+export declare class HgraphContract {
+  public contractId: string;
+  public abi: InterfaceAbi;
+  public client: HgraphClient;
+  public contract: EthersContract;
+
+  constructor(options: ContractOptions);
+  public queryEvents: (params?: ContractQueryEventsParams) => Promise<EventLogDescription[]>
 }
 
 /*
