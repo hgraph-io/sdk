@@ -8,6 +8,7 @@ import {HgraphProvider} from '../context/HgraphProvider'
 
 export {useHgraph, HgraphProvider}
 export {Contract as EthersContract, InterfaceAbi, LogDescription as EventLogDescription} from 'ethers'
+export * from '../client/graphql';
 
 /*
  * Common

@@ -1,0 +1,10 @@
+query RemainingAutomaticTokenAssociations($accountId: bigint!) {
+  account: entity_by_pk(id: $accountId) {
+    max_automatic_token_associations
+    token_account_aggregate(where: {automatic_association: {_eq: true}}) {
+      aggregate {
+        used_automatic_associations: count(columns: automatic_association)
+      }
+    }
+  }
+}
