@@ -13,6 +13,7 @@ import {
   SubscriptionHandlers,
   PatchedSubscriptionHandlers,
   PatchOperation,
+  SubscriptionObservable
 } from '../types'
 import { formatRequestBody, resolveJsonPointer } from './utils'
 
@@ -26,6 +27,7 @@ export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
+  private subscriptions: SubscriptionObservable[];
 
   constructor(options?: ClientOptions) {
     // add to BigInt prototype for JSON.stringify
@@ -73,12 +75,53 @@ export default class HgraphClient implements Client {
     return parse(await response.text())
   }
 
+  removeSubscription(observable: SubscriptionObservable) {
+    this.subscriptions = this.subscriptions.filter(subscription => subscription != observable);
+    observable.unsubscribe();
+    observable.handlers.complete();
+  }
+  removeAllSubscription() {
+    this.subscriptions.forEach(observable=> {
+      observable.unsubscribe();
+      observable.handlers.complete();
+    });
+    this.subscriptions = [];
+  }
+  getSubscribtions(){
+    //copy of original array
+    return [...this.subscriptions];
+  }
+
   subscribe(
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
   ) {
     const body = formatRequestBody(flexibleRequestBody)
-    return this.subscriptionClient.subscribe(body, handlers)
+    const observableSubscription: SubscriptionObservable = {
+      handlers,
+      unsubscribe: null
+    }
+    const deleteSubFromArray = (observable: SubscriptionObservable) => 
+          this.subscriptions = this.subscriptions.filter(subscription => subscription != observable);
+    
+    const observableHandlers: SubscriptionHandlers = {
+      ...handlers,
+      error: (errors)=> {
+        deleteSubFromArray(observableSubscription);
+        handlers.error(errors);
+      },
+      complete: ()=> {
+        deleteSubFromArray(observableSubscription);
+        handlers.complete();
+      }
+    }
+    const unsubscribe = this.subscriptionClient.subscribe(body, observableHandlers);
+    observableSubscription.unsubscribe = ()=> {
+      deleteSubFromArray(observableSubscription);
+      unsubscribe();
+    }
+    this.subscriptions.push(observableSubscription);
+    return observableSubscription;
   }
 
   patchedSubscribe(
@@ -86,8 +129,7 @@ export default class HgraphClient implements Client {
     handlers: PatchedSubscriptionHandlers
   ) {
     let prevData = null;
-    const body = formatRequestBody(flexibleRequestBody)
-    return this.subscriptionClient.subscribe(body, {
+    const patchedHandlers: SubscriptionHandlers = {
       ...handlers,
       next: (data) => {
         let patches: PatchOperation[] = [];
@@ -104,6 +146,7 @@ export default class HgraphClient implements Client {
         prevData = data;
         handlers.next(data, patches);
       },
-    })
+    }
+    return this.subscribe(flexibleRequestBody, patchedHandlers);
   }
 }
