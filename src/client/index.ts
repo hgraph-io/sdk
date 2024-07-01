@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import jsonBigint from 'json-bigint'
 import WebSocket from 'isomorphic-ws'
-import { createPatch } from 'rfc6902';
-import { AddOperation, RemoveOperation, ReplaceOperation } from 'rfc6902/diff';
+import { createPatch } from 'rfc6902'
+import { AddOperation, RemoveOperation, ReplaceOperation } from 'rfc6902/diff'
 import {createClient, Client as SubscriptionClient} from '../../graphql-ws/src'
 import {
   Network,
@@ -13,7 +13,7 @@ import {
   SubscriptionHandlers,
   PatchedSubscriptionHandlers,
   PatchOperation,
-  SubscriptionObservable
+  ObservableSubscription
 } from '../types'
 import { formatRequestBody, resolveJsonPointer } from './utils'
 
@@ -27,7 +27,7 @@ export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  private subscriptions: SubscriptionObservable[];
+  private subscriptions: ObservableSubscription[]
 
   constructor(options?: ClientOptions) {
     // add to BigInt prototype for JSON.stringify
@@ -55,6 +55,8 @@ export default class HgraphClient implements Client {
       connectionParams: this.headers,
       jsonParse: parse,
     })
+
+    this.subscriptions = []
   }
 
   async query(
@@ -75,21 +77,17 @@ export default class HgraphClient implements Client {
     return parse(await response.text())
   }
 
-  removeSubscription(observable: SubscriptionObservable) {
-    this.subscriptions = this.subscriptions.filter(subscription => subscription != observable);
-    observable.unsubscribe();
-    observable.handlers.complete();
+  removeSubscription(observable: ObservableSubscription) {
+    observable.unsubscribe()
   }
+  
   removeAllSubscription() {
-    this.subscriptions.forEach(observable=> {
-      observable.unsubscribe();
-      observable.handlers.complete();
-    });
-    this.subscriptions = [];
+    this.getSubscribtions().forEach(observable=> observable.unsubscribe())
   }
+
   getSubscribtions(){
     //copy of original array
-    return [...this.subscriptions];
+    return [...this.subscriptions]
   }
 
   subscribe(
@@ -97,42 +95,49 @@ export default class HgraphClient implements Client {
     handlers: SubscriptionHandlers
   ) {
     const body = formatRequestBody(flexibleRequestBody)
-    const observableSubscription: SubscriptionObservable = {
+    const observableSubscription: ObservableSubscription = {
       handlers,
       unsubscribe: null
     }
-    const deleteSubFromArray = (observable: SubscriptionObservable) => 
-          this.subscriptions = this.subscriptions.filter(subscription => subscription != observable);
+    
+    const cleanUpSubscription = (observable: ObservableSubscription) => {
+      this.subscriptions = this.subscriptions.filter(subscription => subscription != observable)
+      observableSubscription.unsubscribe = () => {
+        throw new Error("This subscription has already been unsubscribed")
+      }
+    }
     
     const observableHandlers: SubscriptionHandlers = {
       ...handlers,
       error: (errors)=> {
-        deleteSubFromArray(observableSubscription);
-        handlers.error(errors);
+        cleanUpSubscription(observableSubscription)
+        observableSubscription.handlers.error(errors)
       },
       complete: ()=> {
-        deleteSubFromArray(observableSubscription);
-        handlers.complete();
+        cleanUpSubscription(observableSubscription)
+        observableSubscription.handlers.complete()
       }
     }
-    const unsubscribe = this.subscriptionClient.subscribe(body, observableHandlers);
-    observableSubscription.unsubscribe = ()=> {
-      deleteSubFromArray(observableSubscription);
-      unsubscribe();
+
+    const unsubscribe = this.subscriptionClient.subscribe(body, observableHandlers)
+    observableSubscription.unsubscribe = () => {
+      cleanUpSubscription(observableSubscription)
+      unsubscribe()
     }
-    this.subscriptions.push(observableSubscription);
-    return observableSubscription;
+
+    this.subscriptions.push(observableSubscription)
+    return observableSubscription
   }
 
   patchedSubscribe(
     flexibleRequestBody: FlexibleRequestBody,
     handlers: PatchedSubscriptionHandlers
   ) {
-    let prevData = null;
+    let prevData = null
     const patchedHandlers: SubscriptionHandlers = {
       ...handlers,
       next: (data) => {
-        let patches: PatchOperation[] = [];
+        let patches: PatchOperation[] = []
         if (prevData) {
           patches = createPatch(prevData, data)
             .map((operation: AddOperation | ReplaceOperation | RemoveOperation) => {
@@ -141,12 +146,12 @@ export default class HgraphClient implements Client {
                 //add value to remove operation
                 value: operation.op == 'remove' ? resolveJsonPointer(prevData, operation.path) : operation.value
               }
-            });
+            })
         }
-        prevData = data;
-        handlers.next(data, patches);
+        prevData = data
+        handlers.next(data, patches)
       },
     }
-    return this.subscribe(flexibleRequestBody, patchedHandlers);
+    return this.subscribe(flexibleRequestBody, patchedHandlers)
   }
 }

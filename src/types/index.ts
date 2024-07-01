@@ -59,11 +59,9 @@ export interface Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-
-  removeSubscription: (subscription: SubscriptionObservable) => void
+  removeSubscription: (subscription: ObservableSubscription) => void
   removeAllSubscription: () => void
-  getSubscribtions: () => SubscriptionObservable[]
-
+  getSubscribtions: () => ObservableSubscription[]
   query: <T>(
     flexibleRequestBody: FlexibleRequestBody,
     abortSignal?: AbortSignal
@@ -71,11 +69,11 @@ export interface Client {
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
-  ) => SubscriptionObservable
+  ) => ObservableSubscription
   patchedSubscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: PatchedSubscriptionHandlers
-  ) => SubscriptionObservable
+  ) => ObservableSubscription
 }
 
 export default class HgraphClient implements Client {
@@ -83,10 +81,10 @@ export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
-  private subscriptions: SubscriptionObservable[]
-  removeSubscription: (subscription: SubscriptionObservable) => void
+  private subscriptions: ObservableSubscription[]
+  removeSubscription: (subscription: ObservableSubscription) => void
   removeAllSubscription: () => void
-  getSubscribtions: () => SubscriptionObservable[]
+  getSubscribtions: () => ObservableSubscription[]
   query: <T>(
     flexibleRequestBody: FlexibleRequestBody,
     abortSignal?: AbortSignal
@@ -94,11 +92,11 @@ export default class HgraphClient implements Client {
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
-  ) => SubscriptionObservable
+  ) => ObservableSubscription
   patchedSubscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: PatchedSubscriptionHandlers
-  ) => SubscriptionObservable
+  ) => ObservableSubscription
 }
 
 /*
@@ -124,7 +122,7 @@ export interface ContractQueryEventsParams {
 }
 
 
-export interface SubscriptionObservable {
+export interface ObservableSubscription {
   readonly handlers: SubscriptionHandlers;
   unsubscribe: () => void;
 }
