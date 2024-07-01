@@ -60,7 +60,7 @@ export interface Client {
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
   removeSubscription: (subscription: ObservableSubscription) => void
-  removeAllSubscription: () => void
+  removeAllSubscriptions: () => void
   getSubscribtions: () => ObservableSubscription[]
   query: <T>(
     flexibleRequestBody: FlexibleRequestBody,
@@ -83,7 +83,7 @@ export default class HgraphClient implements Client {
   subscriptionClient: SubscriptionClient
   private subscriptions: ObservableSubscription[]
   removeSubscription: (subscription: ObservableSubscription) => void
-  removeAllSubscription: () => void
+  removeAllSubscriptions: () => void
   getSubscribtions: () => ObservableSubscription[]
   query: <T>(
     flexibleRequestBody: FlexibleRequestBody,

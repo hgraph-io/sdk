@@ -81,7 +81,7 @@ export default class HgraphClient implements Client {
     observable.unsubscribe()
   }
   
-  removeAllSubscription() {
+  removeAllSubscriptions() {
     this.getSubscribtions().forEach(observable=> observable.unsubscribe())
   }
 
@@ -99,7 +99,7 @@ export default class HgraphClient implements Client {
       handlers,
       unsubscribe: null
     }
-    
+
     const cleanUpSubscription = (observable: ObservableSubscription) => {
       this.subscriptions = this.subscriptions.filter(subscription => subscription != observable)
       observableSubscription.unsubscribe = () => {
