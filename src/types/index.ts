@@ -59,6 +59,9 @@ export interface Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
+  removeSubscription: (subscription: ObservableSubscription) => void
+  removeAllSubscriptions: () => void
+  getSubscribtions: () => ObservableSubscription[]
   query: <T>(
     flexibleRequestBody: FlexibleRequestBody,
     abortSignal?: AbortSignal
@@ -66,11 +69,11 @@ export interface Client {
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
-  ) => () => void
+  ) => ObservableSubscription
   patchedSubscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: PatchedSubscriptionHandlers
-  ) => () => void
+  ) => ObservableSubscription
 }
 
 export default class HgraphClient implements Client {
@@ -78,6 +81,10 @@ export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
+  private subscriptions: ObservableSubscription[]
+  removeSubscription: (subscription: ObservableSubscription) => void
+  removeAllSubscriptions: () => void
+  getSubscribtions: () => ObservableSubscription[]
   query: <T>(
     flexibleRequestBody: FlexibleRequestBody,
     abortSignal?: AbortSignal
@@ -85,11 +92,11 @@ export default class HgraphClient implements Client {
   subscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
-  ) => () => void
+  ) => ObservableSubscription
   patchedSubscribe: (
     flexibleRequestBody: FlexibleRequestBody,
     handlers: PatchedSubscriptionHandlers
-  ) => () => void
+  ) => ObservableSubscription
 }
 
 /*
@@ -112,6 +119,12 @@ export interface ContractQueryEventsParams {
   limit?: number;
   offset?: number;
   order?: Order;
+}
+
+
+export interface ObservableSubscription {
+  readonly handlers: SubscriptionHandlers;
+  unsubscribe: () => void;
 }
 
 export declare class HgraphContract {
