@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import jsonBigint from 'json-bigint'
 import WebSocket from 'isomorphic-ws'
-import { createPatch } from 'rfc6902';
-import { AddOperation, RemoveOperation, ReplaceOperation } from 'rfc6902/diff';
+import { createPatch } from 'rfc6902'
+import { AddOperation, RemoveOperation, ReplaceOperation } from 'rfc6902/diff'
 import {createClient, Client as SubscriptionClient} from '../../graphql-ws/src'
 import {
   Network,
@@ -13,6 +13,7 @@ import {
   SubscriptionHandlers,
   PatchedSubscriptionHandlers,
   PatchOperation,
+  ObservableSubscription
 } from '../types'
 import { formatRequestBody, resolveJsonPointer } from './utils'
 
@@ -26,6 +27,7 @@ export default class HgraphClient implements Client {
   endpoint: string
   headers: Record<string, string>
   subscriptionClient: SubscriptionClient
+  private subscriptions: ObservableSubscription[]
 
   constructor(options?: ClientOptions) {
     // add to BigInt prototype for JSON.stringify
@@ -53,6 +55,8 @@ export default class HgraphClient implements Client {
       connectionParams: this.headers,
       jsonParse: parse,
     })
+
+    this.subscriptions = []
   }
 
   async query(
@@ -73,24 +77,67 @@ export default class HgraphClient implements Client {
     return parse(await response.text())
   }
 
+  removeSubscription(observable: ObservableSubscription) {
+    observable.unsubscribe()
+  }
+  
+  removeAllSubscriptions() {
+    this.getSubscribtions().forEach(observable=> observable.unsubscribe())
+  }
+
+  getSubscribtions(){
+    //copy of original array
+    return [...this.subscriptions]
+  }
+
   subscribe(
     flexibleRequestBody: FlexibleRequestBody,
     handlers: SubscriptionHandlers
   ) {
     const body = formatRequestBody(flexibleRequestBody)
-    return this.subscriptionClient.subscribe(body, handlers)
+    const observableSubscription: ObservableSubscription = {
+      handlers,
+      unsubscribe: null
+    }
+
+    const cleanUpSubscription = (observable: ObservableSubscription) => {
+      this.subscriptions = this.subscriptions.filter(subscription => subscription != observable)
+      observableSubscription.unsubscribe = () => {
+        throw new Error("This subscription has already been unsubscribed")
+      }
+    }
+    
+    const observableHandlers: SubscriptionHandlers = {
+      ...handlers,
+      error: (errors)=> {
+        cleanUpSubscription(observableSubscription)
+        observableSubscription.handlers.error(errors)
+      },
+      complete: ()=> {
+        cleanUpSubscription(observableSubscription)
+        observableSubscription.handlers.complete()
+      }
+    }
+
+    const unsubscribe = this.subscriptionClient.subscribe(body, observableHandlers)
+    observableSubscription.unsubscribe = () => {
+      cleanUpSubscription(observableSubscription)
+      unsubscribe()
+    }
+
+    this.subscriptions.push(observableSubscription)
+    return observableSubscription
   }
 
   patchedSubscribe(
     flexibleRequestBody: FlexibleRequestBody,
     handlers: PatchedSubscriptionHandlers
   ) {
-    let prevData = null;
-    const body = formatRequestBody(flexibleRequestBody)
-    return this.subscriptionClient.subscribe(body, {
+    let prevData = null
+    const patchedHandlers: SubscriptionHandlers = {
       ...handlers,
       next: (data) => {
-        let patches: PatchOperation[] = [];
+        let patches: PatchOperation[] = []
         if (prevData) {
           patches = createPatch(prevData, data)
             .map((operation: AddOperation | ReplaceOperation | RemoveOperation) => {
@@ -99,11 +146,12 @@ export default class HgraphClient implements Client {
                 //add value to remove operation
                 value: operation.op == 'remove' ? resolveJsonPointer(prevData, operation.path) : operation.value
               }
-            });
+            })
         }
-        prevData = data;
-        handlers.next(data, patches);
+        prevData = data
+        handlers.next(data, patches)
       },
-    })
+    }
+    return this.subscribe(flexibleRequestBody, patchedHandlers)
   }
 }
