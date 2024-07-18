@@ -69,6 +69,77 @@ and running.
 
 ## Features
 
+### Subscription Management
+
+SDK includes built-in GraphQL subscription management capabilities, simplifying the process of handling and interacting with subscriptions. This feature encapsulates all active subscriptions and their lifecycle control within the `Client`.
+
+#### Key Features
+
+- The `subscribe` and `patchedSubscribe` methods return an immutable `ObservableSubscription` object.
+- `ObservableSubscription` serves as both a subscription identifier and contains an `unsubscribe` method.
+- `Client` methods for subscription management:
+  ```typescript
+  removeSubscription: (subscription: ObservableSubscription) => void
+  removeAllSubscriptions: () => void
+  getSubscribtions: () => ObservableSubscription[]
+  ```
+
+#### Example Usage
+
+##### Creating a Subscription:
+
+```typescript
+import Client, { Network, Environment, ObservableSubscription } from '@hgraph.io/sdk';
+const hg = new Client({
+  network: Network.HederaMainnet,
+  environment: Environment.Production,
+});
+const transactionSubscription: ObservableSubscription = hg.subscribe({
+  query: `
+  subscription LastTransaction {
+    transaction(limit: 1, order_by: {consensus_timestamp: desc}) {
+      id
+      consensus_timestamp
+    }
+  }`
+}, {
+  next: (data) => {
+    console.log(data);
+  },
+  error: (errors) => {
+    console.error('LastTransaction subscription closed with errors:', errors);
+  },
+  complete: () => {
+    console.log("LastTransaction subscription complete");
+  }
+});
+```
+
+##### Unsubscribing from an Active Subscription
+
+Using the subscription object:
+```typescript
+transactionSubscription.unsubscribe();
+```
+Or using the client method:
+```typescript
+hg.removeSubscription(transactionSubscription);
+```
+> Attempting to unsubscribe from an already completed subscription will raise an exception to prevent unwanted side effects.
+
+##### Unsubscribing from All Active Subscriptions
+
+```typescript
+hg.removeAllSubscriptions();
+```
+> When unsubscribing (by any method), the `complete` subscription handler is called.
+
+##### Retrieving All Active Subscriptions
+
+```typescript
+const subscriptions: ObservableSubscription[] = hg.getSubscriptions();
+```
+
 ### patchedSubscribe Method
 
 The `patchedSubscribe` method extends the functionality of the existing `subscribe` method by providing detailed patches indicating changes in data. These patches follow the [RFC6902](https://datatracker.ietf.org/doc/html/rfc6902) standard, with operations such as "add", "remove", and "replace". This allows developers to precisely understand the modifications in the updated data, making it especially useful for scenarios like tracking ownership transfers of NFTs.
