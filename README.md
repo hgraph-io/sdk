@@ -1,211 +1,157 @@
 # Hgraph SDK
 
-## Introduction
-
 [Hgraph](https://hgraph.io) is a Web3 data infrastructure company focused on tooling for the Hedera network and beyond. You can [sign up for an account](https://hgraph.com/pricing) and access our [account dashboard console](https://console.hgraph.io). This SDK intends to make developing with our API easy, flexible, and fast.
 
-### 📖 [View SDK Documentation →](https://docs.hgraph.com/category/hgraph-sdk)
+## Hgraph Docs 📖
+- [Hgraph SDK documentation →](https://docs.hgraph.com/category/hgraph-sdk)
+- [About the GraphQL API →](https://docs.hgraph.com/graphql-api/subscriptions)
+- [About GraphQL subscriptions →](https://docs.hgraph.com/graphql-api/subscriptions)
+- **[Full Hgraph docs →](https://docs.hgraph.com/)**
 
-If you’re new to GraphQL, you can learn more [GraphQL](https://graphql.org/).
-Then, build queries using and [interactive editor](https://console.hgraph.io/editor).
+## Installation & usage
 
-## Versioning
+To install the `@hgraph.io/sdk`, run the following command:
 
-This SDK is in active development in conjunction with the
-[hgraph](https://hgraph.io) API.
+```bash
+npm install --save-exact @hgraph.io/sdk@latest
+```
 
-We are working towards following [Semantic Versioning](https://semver.org)
-versioning.
-
-**Before a v1 major release there may be breaking changes on new releases. For
-use in production, we recommend pinning an exact release - i.e `--save-exact`.**
-
-## Installation & Usage
-
-`npm i --save-exact @hgraph.io/sdk@latest`.
-
-The default export of the SDK is a class that accepts configuration parameters.
+This command will add the latest version of the SDK to your project's dependencies, ensuring consistent behavior across environments.
 
 ### Authenticating
 
-#### Using an API key (deprecated)
+To interact with Hgraph's services, you'll need to authenticate your requests. There are currently two methods for authentication:
 
-To authenticate using an API key, pass your API key to the `x-api-key` header on
-each request.
+#### Using an API key
 
-#### Using a JWT
+To authenticate using an API key, include your API key in the `x-api-key header` of each request. Here's how you can set it up:
 
-For front-end solutions, we plan to authenticate using json web tokens. See
-<https://jwt.io/>. Currently, this functionality is limited, please reach out to
-use to utilize this functionality.
+```javascript
+const hgraph = new HGraphSDK({
+  headers: {
+    'x-api-key': 'your-api-key-here',
+  },
+});
+```
 
+#### Using a JSON Web Token (JWT)
+
+For enhanced security, especially in front-end applications, we are rolling out authentication using JSON Web Tokens (JWT). JWTs allow for secure transmission of authentication details without exposing sensitive information.
+
+Learn more about JWTs at [jwt.io](https://jwt.io/).
+
+:::note Early access
+JWT authentication is in the early access phase. If you're interested in implementing this method, please [reach out to support](/support) for assistance.
+:::
+
+##### Example usage
+
+Once you have your JWT, you can authenticate your requests as follows:
+
+```javascript
+import HGraphSDK from '@hgraph.io/sdk';
+
+const hgraph = new HGraphSDK({
+  headers: {
+    Authorization: `Bearer your-jwt-token-here`,
+  },
+});
+```
 ## Examples
 
-The following quick start template repos for different environments are
-available:
+### Overview
 
-- [node](https://github.com/hgraph-io/nodejs-template)
-- [browser](https://github.com/hgraph-io/browser-template)
-- [nextjs](https://github.com/hgraph-io/nextjs-template)
-- [react](https://github.com/hgraph-io/react-template)
+To help you get started quickly, we offer a collection of quick-start template repositories tailored for various development environments. These templates come pre-configured with essential settings and dependencies, allowing you to set up your project with minimal effort. By leveraging these templates, you can quickly integrate Hgraph into your project and begin building right away.
 
-## Developing
+### Available Templates
 
-The following instructions are for meant for contributing to this repo (or
-hacking away). To run this code base locally use the following steps to get up
-and running.
+Choose the template that best fits your development environment:
 
-- `gh repo clone hgraph-io/sdk`
-- `npm i`
-- `npm run watch` : watch for file changes and build on change
-- depend on local version of sdk by using local dependency: `npm i ../sdk'
+**[Node →](https://github.com/hgraph-io/nodejs-template)**  
+Ideal for backend and server-side applications using Node.js.
+
+**[Browser →](https://github.com/hgraph-io/browser-template)**  
+Tailored for web applications running directly in the browser, enabling quick integration with Hgraph APIs.
+
+**[Next.js →](https://github.com/hgraph-io/nextjs-template)**  
+Optimized for full-stack and server-rendered applications using Next.js.
+
+**[React →](https://github.com/hgraph-io/react-template)**  
+For frontend projects using React, providing an easy setup for single-page applications.
+
+**[React Native →](https://github.com/hgraph-io/react-native-template)**  
+Suitable for mobile app development with React Native, allowing cross-platform development with Hgraph.
+
+## Subscriptions
+
+Our [documentation](https://docs.hgraph.com/graphql-api/subscriptions) introduces the subscription capabilities in the Hgraph SDK, enabling developers to easily set up and manage real-time data streams with GraphQL. It provides guidance on using built-in methods to track data changes and efficiently handle subscription lifecycles.
+
+**[GraphQL Subscriptions (docs) →](https://docs.hgraph.com/graphql-api/subscriptions)** 
+
+## Contributing
+
+If you're interested in contributing to this repository or experimenting with the codebase, follow the steps below to set up your local development environment.
+
+### Getting Started
+
+#### 1. Clone the Repository
+
+First, clone the repository to your local machine using GitHub CLI:
+
+```bash
+gh repo clone hgraph-io/sdk
+```
+
+#### 2. Install Dependencies
+
+Navigate to the cloned repository and install all necessary npm packages:
+
+```bash
+npm install
+```
+
+#### 3. Build and Watch for Changes
+
+To automatically rebuild the project whenever you make changes, run:
+
+```bash
+npm run watch
+```
+
+This command watches for file changes and rebuilds the project accordingly.
+
+#### 4. Use the Local SDK in Another Project
+
+If you want to use your local version of the SDK in another project for testing or development purposes, you can set it as a local dependency:
+
+```bash
+npm install ../sdk
+```
+
+This command tells npm to use the SDK from your local file system instead of fetching it from the npm registry.
 
 ### Debugging
 
-- test ws connection:
-  `wscat -s 'graphql-ws' -H 'x-api-key: <...>' -c wss://api.hgraph.dev/v1/graphql`
+To test the WebSocket connection and ensure that everything is set up correctly, you can use `wscat`, a WebSocket client for the command line.
 
-## Features
+#### Test WebSocket Connection
 
-### Subscription Management
+Replace `<YOUR_API_KEY>` with your actual API key and run:
 
-SDK includes built-in GraphQL subscription management capabilities, simplifying the process of handling and interacting with subscriptions. This feature encapsulates all active subscriptions and their lifecycle control within the `Client`.
-
-#### Key Features
-
-- The `subscribe` and `patchedSubscribe` methods return an immutable `ObservableSubscription` object.
-- `ObservableSubscription` serves as both a subscription identifier and contains an `unsubscribe` method.
-- `Client` methods for subscription management:
-  ```typescript
-  removeSubscription: (subscription: ObservableSubscription) => void
-  removeAllSubscriptions: () => void
-  getSubscribtions: () => ObservableSubscription[]
-  ```
-
-#### Example Usage
-
-##### Creating a Subscription:
-
-```typescript
-import Client, { Network, Environment, ObservableSubscription } from '@hgraph.io/sdk';
-const hg = new Client({
-  network: Network.HederaMainnet,
-  environment: Environment.Production,
-});
-const transactionSubscription: ObservableSubscription = hg.subscribe({
-  query: `
-  subscription LastTransaction {
-    transaction(limit: 1, order_by: {consensus_timestamp: desc}) {
-      id
-      consensus_timestamp
-    }
-  }`
-}, {
-  next: (data) => {
-    console.log(data);
-  },
-  error: (errors) => {
-    console.error('LastTransaction subscription closed with errors:', errors);
-  },
-  complete: () => {
-    console.log("LastTransaction subscription complete");
-  }
-});
+```bash
+wscat -s 'graphql-ws' -H 'x-api-key: <YOUR_API_KEY>' -c wss://api.hgraph.dev/v1/graphql
 ```
 
-##### Unsubscribing from an Active Subscription
+This command initiates a WebSocket connection to the GraphQL endpoint at `wss://api.hgraph.dev/v1/graphql` using your API key for authentication.
 
-Using the subscription object:
-```typescript
-transactionSubscription.unsubscribe();
-```
-Or using the client method:
-```typescript
-hg.removeSubscription(transactionSubscription);
-```
-> Attempting to unsubscribe from an already completed subscription will raise an exception to prevent unwanted side effects.
+**Note:** If you don't have `wscat` installed, you can install it globally using:
 
-##### Unsubscribing from All Active Subscriptions
-
-```typescript
-hg.removeAllSubscriptions();
-```
-> When unsubscribing (by any method), the `complete` subscription handler is called.
-
-##### Retrieving All Active Subscriptions
-
-```typescript
-const subscriptions: ObservableSubscription[] = hg.getSubscriptions();
+```bash
+npm install -g wscat
 ```
 
-### patchedSubscribe Method
+## Versioning
 
-The `patchedSubscribe` method extends the functionality of the existing `subscribe` method by providing detailed patches indicating changes in data. These patches follow the [RFC6902](https://datatracker.ietf.org/doc/html/rfc6902) standard, with operations such as "add", "remove", and "replace". This allows developers to precisely understand the modifications in the updated data, making it especially useful for scenarios like tracking ownership transfers of NFTs.
+This Software Development Kit (SDK) is actively being developed in conjunction with the [Hgraph API](https://hgraph.com) to ensure seamless integration and compatibility between the two. We are committed to adopting [Semantic Versioning](https://semver.org) standards, which will provide clear and predictable updates, making it easier for developers to manage dependencies and stay informed about changes.
 
-
-#### Patch Operation Structure:
-
-```ts
-interface PatchOperation {
-  op: 'add' | 'remove' | 'replace';
-  path: string;
-  value: any;
-}
-```
-
-- `op`: Indicates the type of operation performed.
-- `path`: A JSON Pointer string that specifies the location in the data where the operation is performed. JSON Pointers are defined in [RFC6901](https://datatracker.ietf.org/doc/html/rfc6901).
-- `value`: The value associated with the operation. For `add` and `replace` operations, this is the new value being added or replacing the old value. For `remove` operations, this is the value being removed.
-
-#### Example Usage
-
-When a change occurs, the method generates patches that describe the exact differences between the previous and current states. Here is a basic example demonstrating the usage of `patchedSubscribe`:
-
-```ts
-import Client, { Network, Environment } from '@hgraph.io/sdk';
-
-const hg = new Client({
-  network: Network.HederaTestnet,
-  environment: Environment.Production,
-});
-
-const observableSpender = "12345678";
-
-hg.patchedSubscribe({
-  query: `
-  subscription GetNFTs($spender: bigint!) {
-    nft(where: { spender: { _eq: $spender } }) {
-      token_id
-      serial_number
-      metadata
-    }
-  }`,
-  variables: {
-    spender: observableSpender
-  }
-}, {
-  next: (data, patches) => {
-    patches.forEach(patch => {
-      switch (patch.op) {
-        case 'add':
-          console.log("New NFT grant rights to spender:", patch.value);
-          break;
-        case 'remove':
-          console.log("NFT owner revoked rights:", patch.value);
-          break;
-        case 'replace':
-          console.log(`NFT data replaced at path: ${patch.path}, replaced value:`, patch.value);
-          break;
-      }
-    });
-  },
-  error: (err) => {
-    console.error(err);
-  },
-  complete: () => {
-    console.log("Subscription complete");
-  }
-});
-```
-
-> In this example, the `patchedSubscribe` method is used to subscribe to NFTs based on a spender. The `next` handler processes the patches to determine what NFTs has been added, removed or what data in NFT replaced.
+> Before we release version 1.0, updates may introduce breaking changes as we refine the software. To maintain stability in production, we recommend pinning dependencies to an exact version using `--save-exact` when installing the package.
