@@ -2,14 +2,12 @@
 
 ## Introduction
 
-[Hgraph](https://hgraph.io) provides data and API services. You can sign up for
-an account at <https://console.hgraph.io>
+[Hgraph](https://hgraph.io) is a Web3 data infrastructure company focused on tooling for the Hedera network and beyond. You can [sign up for an account](https://hgraph.com/pricing) and access our [account dashboard console](https://console.hgraph.io). This SDK intends to make developing with our API easy, flexible, and fast.
 
-This SDK intends to make developing with our API fun, fast, and powerful.
+### 📖 [View SDK Documentation →](https://docs.hgraph.com/category/hgraph-sdk)
 
 If you’re new to GraphQL, you can learn more [GraphQL](https://graphql.org/).
-Then, build queries using and interactive editor at
-<https://console.hgraph.io/editor>.
+Then, build queries using and [interactive editor](https://console.hgraph.io/editor).
 
 ## Versioning
 
