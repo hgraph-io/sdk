@@ -27,6 +27,8 @@ To interact with Hgraph's services, you'll need to authenticate your requests. T
 To authenticate using an API key, include your API key in the `x-api-key header` of each request. Here's how you can set it up:
 
 ```javascript
+import HGraphSDK from '@hgraph.io/sdk';
+
 const hgraph = new HGraphSDK({
   headers: {
     'x-api-key': 'your-api-key-here',
@@ -41,7 +43,7 @@ For enhanced security, especially in front-end applications, we are rolling out 
 Learn more about JWTs at [jwt.io](https://jwt.io/).
 
 :::note Early access
-JWT authentication is in the early access phase. If you're interested in implementing this method, please [reach out to support](/support) for assistance.
+JWT authentication is in the early access phase. If you're interested in implementing this method, please [reach out to support](https://docs.hgraph.com/support) for assistance.
 :::
 
 ##### Example usage
@@ -139,10 +141,10 @@ To test the WebSocket connection and ensure that everything is set up correctly,
 Replace `<YOUR_API_KEY>` with your actual API key and run:
 
 ```bash
-wscat -s 'graphql-ws' -H 'x-api-key: <YOUR_API_KEY>' -c wss://api.hgraph.dev/v1/graphql
+wscat -s 'graphql-ws' -H 'x-api-key: <YOUR_API_KEY>' -c wss://api.hgraph.io/v1/graphql
 ```
 
-This command initiates a WebSocket connection to the GraphQL endpoint at `wss://api.hgraph.dev/v1/graphql` using your API key for authentication.
+This command initiates a WebSocket connection to the GraphQL endpoint at `wss://api.hgraph.io/v1/graphql` using your API key for authentication.
 
 **Note:** If you don't have `wscat` installed, you can install it globally using:
 
