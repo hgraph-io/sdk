@@ -42,9 +42,10 @@ For enhanced security, especially in front-end applications, we are rolling out 
 
 Learn more about JWTs at [jwt.io](https://jwt.io/).
 
-:::note Early access
-JWT authentication is in the early access phase. If you're interested in implementing this method, please [reach out to support](https://docs.hgraph.com/support) for assistance.
-:::
+> [!NOTE]
+> Early access
+> JWT authentication is in the early access phase. If you're interested in implementing this method, please [reach out to support](https://docs.hgraph.com/support) for assistance.
+
 
 ##### Example usage
 
