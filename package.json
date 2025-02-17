@@ -2,7 +2,7 @@
   "homepage": "https://hgraph.io",
   "name": "@hgraph.io/sdk",
   "description": "hgraph.io sdk",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "main": "./dist/node-cjs.js",
   "module": "./dist/node-esm.js",
   "browser": {
