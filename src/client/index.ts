@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch'
 import jsonBigint from 'json-bigint'
 import WebSocket from 'isomorphic-ws'
-import { createPatch } from 'rfc6902'
-import { AddOperation, RemoveOperation, ReplaceOperation } from 'rfc6902/diff'
+import {createPatch} from 'rfc6902'
+import {AddOperation, RemoveOperation, ReplaceOperation} from 'rfc6902/diff'
 import {createClient, Client as SubscriptionClient} from '../../graphql-ws/src'
 import {
   Network,
@@ -13,9 +13,9 @@ import {
   SubscriptionHandlers,
   PatchedSubscriptionHandlers,
   PatchOperation,
-  ObservableSubscription
+  ObservableSubscription,
 } from '../types'
-import { formatRequestBody, resolveJsonPointer } from './utils'
+import {formatRequestBody, resolveJsonPointer} from './utils'
 
 const {parse} = jsonBigint({
   useNativeBigInt: true,
@@ -49,8 +49,14 @@ export default class HgraphClient implements Client {
       ...(options?.token && {authorization: `Bearer ${options.token}`}),
     }
 
+    const identifier = options?.token || options?.headers['x-api-key']
+    const url = identifier
+      ? this.endpoint
+          .replace('https', 'wss')
+          .replace('graphql', `${encodeURIComponent(identifier)}/graphql`)
+      : this.endpoint.replace('https', 'wss')
     this.subscriptionClient = createClient({
-      url: this.endpoint.replace('https', 'wss'),
+      url,
       webSocketImpl: WebSocket,
       connectionParams: this.headers,
       jsonParse: parse,
@@ -80,12 +86,12 @@ export default class HgraphClient implements Client {
   removeSubscription(observable: ObservableSubscription) {
     observable.unsubscribe()
   }
-  
+
   removeAllSubscriptions() {
-    this.getSubscribtions().forEach(observable=> observable.unsubscribe())
+    this.getSubscribtions().forEach((observable) => observable.unsubscribe())
   }
 
-  getSubscribtions(){
+  getSubscribtions() {
     //copy of original array
     return [...this.subscriptions]
   }
@@ -97,29 +103,34 @@ export default class HgraphClient implements Client {
     const body = formatRequestBody(flexibleRequestBody)
     const observableSubscription: ObservableSubscription = {
       handlers,
-      unsubscribe: null
+      unsubscribe: null,
     }
 
     const cleanUpSubscription = (observable: ObservableSubscription) => {
-      this.subscriptions = this.subscriptions.filter(subscription => subscription != observable)
+      this.subscriptions = this.subscriptions.filter(
+        (subscription) => subscription != observable
+      )
       observableSubscription.unsubscribe = () => {
-        throw new Error("This subscription has already been unsubscribed")
-      }
-    }
-    
-    const observableHandlers: SubscriptionHandlers = {
-      ...handlers,
-      error: (errors)=> {
-        cleanUpSubscription(observableSubscription)
-        observableSubscription.handlers.error(errors)
-      },
-      complete: ()=> {
-        cleanUpSubscription(observableSubscription)
-        observableSubscription.handlers.complete()
+        throw new Error('This subscription has already been unsubscribed')
       }
     }
 
-    const unsubscribe = this.subscriptionClient.subscribe(body, observableHandlers)
+    const observableHandlers: SubscriptionHandlers = {
+      ...handlers,
+      error: (errors) => {
+        cleanUpSubscription(observableSubscription)
+        observableSubscription.handlers.error(errors)
+      },
+      complete: () => {
+        cleanUpSubscription(observableSubscription)
+        observableSubscription.handlers.complete()
+      },
+    }
+
+    const unsubscribe = this.subscriptionClient.subscribe(
+      body,
+      observableHandlers
+    )
     observableSubscription.unsubscribe = () => {
       cleanUpSubscription(observableSubscription)
       unsubscribe()
@@ -139,14 +150,18 @@ export default class HgraphClient implements Client {
       next: (data) => {
         let patches: PatchOperation[] = []
         if (prevData) {
-          patches = createPatch(prevData, data)
-            .map((operation: AddOperation | ReplaceOperation | RemoveOperation) => {
+          patches = createPatch(prevData, data).map(
+            (operation: AddOperation | ReplaceOperation | RemoveOperation) => {
               return {
                 ...operation,
                 //add value to remove operation
-                value: operation.op == 'remove' ? resolveJsonPointer(prevData, operation.path) : operation.value
+                value:
+                  operation.op == 'remove'
+                    ? resolveJsonPointer(prevData, operation.path)
+                    : operation.value,
               }
-            })
+            }
+          )
         }
         prevData = data
         handlers.next(data, patches)

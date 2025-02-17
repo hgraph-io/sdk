@@ -9,7 +9,7 @@ export default async function verifyJws(
   if (globalThis.crypto)
     throw new Error('Not supported in a browser environment')
 
-  const crypto = await import('node:crypto');
+  const crypto = await import('node:crypto')
   const publicKey = crypto.createPublicKey({
     key: Buffer.from(cryptoAccountPublicKey, 'hex'),
     format: 'der',

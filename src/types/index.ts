@@ -1,20 +1,27 @@
 import React from 'react'
 import {ExecutionResult, GraphQLError} from 'graphql'
-import {Contract as EthersContract, InterfaceAbi, LogDescription as EventLogDescription} from 'ethers'
+import {
+  Contract as EthersContract,
+  InterfaceAbi,
+  LogDescription as EventLogDescription,
+} from 'ethers'
 import {DocumentNode} from 'graphql/language/ast'
 import {Client as SubscriptionClient} from '../../graphql-ws/src'
 import {useHgraph} from '../hooks/useHgraph'
 import {HgraphProvider} from '../context/HgraphProvider'
 
 export {useHgraph, HgraphProvider}
-export {Contract as EthersContract, InterfaceAbi, LogDescription as EventLogDescription} from 'ethers'
-export * from '../client/graphql';
+export {
+  Contract as EthersContract,
+  InterfaceAbi,
+  LogDescription as EventLogDescription,
+} from 'ethers'
+export * from '../client/graphql'
 
 /*
  * Common
  */
-export type Order = 'asc' | 'desc';
-
+export type Order = 'asc' | 'desc'
 
 /*
  * HgraphProvider
@@ -103,38 +110,39 @@ export default class HgraphClient implements Client {
  * Contract setup
  */
 export interface ContractOptions {
-  contractId: string;
-  abi: InterfaceAbi;
-  client: HgraphClient;
+  contractId: string
+  abi: InterfaceAbi
+  client: HgraphClient
 }
 
 export interface Contract {
-  contractId: string;
-  abi: InterfaceAbi;
-  client: HgraphClient;
+  contractId: string
+  abi: InterfaceAbi
+  client: HgraphClient
   queryEvents: (ContractQueryEventsParams) => Promise<EventLogDescription[]>
 }
 
 export interface ContractQueryEventsParams {
-  limit?: number;
-  offset?: number;
-  order?: Order;
+  limit?: number
+  offset?: number
+  order?: Order
 }
 
-
 export interface ObservableSubscription {
-  readonly handlers: SubscriptionHandlers;
-  unsubscribe: () => void;
+  readonly handlers: SubscriptionHandlers
+  unsubscribe: () => void
 }
 
 export declare class HgraphContract {
-  public contractId: string;
-  public abi: InterfaceAbi;
-  public client: HgraphClient;
-  public contract: EthersContract;
+  public contractId: string
+  public abi: InterfaceAbi
+  public client: HgraphClient
+  public contract: EthersContract
 
-  constructor(options: ContractOptions);
-  public queryEvents: (params?: ContractQueryEventsParams) => Promise<EventLogDescription[]>
+  constructor(options: ContractOptions)
+  public queryEvents: (
+    params?: ContractQueryEventsParams
+  ) => Promise<EventLogDescription[]>
 }
 
 /*
@@ -174,14 +182,16 @@ export interface PatchOperation {
 /*
  * Responses for patchedSubscribe
  */
-// https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md 
+// https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md
 // https://datatracker.ietf.org/doc/html/rfc6902
 export interface PatchedSubscriptionHandlers {
-  next: <TData,TExtension>(data: ExecutionResult<TData,TExtension>, patches: PatchOperation[]) => void
+  next: <TData, TExtension>(
+    data: ExecutionResult<TData, TExtension>,
+    patches: PatchOperation[]
+  ) => void
   error: (err: GraphQLError[]) => void
   complete: () => void
 }
-
 
 /*
  * Responses

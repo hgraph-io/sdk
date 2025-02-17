@@ -18,7 +18,7 @@ async function createPrivateKey(cryptoAccountPrivateKey: string) {
   if (globalThis.crypto)
     throw new Error('Not supported in a browser environment')
 
-  const crypto = await import('node:crypto');
+  const crypto = await import('node:crypto')
 
   // asn
   const OneAsymmetricKey = asn.define('OneAsymmetricKey', function () {
