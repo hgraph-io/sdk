@@ -61,7 +61,7 @@
   "scripts": {
     "watch": "nodemon -w src -e ts,json,gql,graphql --exec 'npm run build'",
     "build": "node ./build.mjs",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,graphql,gql}\"",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
     "prepublishOnly": "rm -Rf dist && npm run build"
   }
 }
