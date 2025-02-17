@@ -53,7 +53,7 @@ export default class HgraphClient implements Client {
     const url = identifier
       ? this.endpoint
           .replace('https', 'wss')
-          .replace('graphql', `${identifier}/graphql`)
+          .replace('graphql', `${encodeURIComponent(identifier)}/graphql`)
       : this.endpoint.replace('https', 'wss')
     this.subscriptionClient = createClient({
       url,
