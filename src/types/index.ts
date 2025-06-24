@@ -17,6 +17,7 @@ export {
   LogDescription as EventLogDescription,
 } from 'ethers'
 export * from '../client/graphql'
+export * from './graphql'
 
 /*
  * Common

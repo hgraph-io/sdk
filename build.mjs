@@ -54,3 +54,4 @@ esbuild.build({
 // fs.mkdir('dist', console.error)
 fs.mkdir('dist', () => {})
 fs.copyFile('src/types/index.ts', 'dist/index.d.ts', () => {})
+fs.copyFile('src/types/graphql.ts', 'dist/graphql.d.ts', () => {})
