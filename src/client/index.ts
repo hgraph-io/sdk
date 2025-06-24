@@ -88,12 +88,19 @@ export default class HgraphClient implements Client {
   }
 
   removeAllSubscriptions() {
-    this.getSubscribtions().forEach((observable) => observable.unsubscribe())
+    this.getSubscriptions().forEach((observable) => observable.unsubscribe())
   }
 
-  getSubscribtions() {
+  getSubscriptions() {
     //copy of original array
     return [...this.subscriptions]
+  }
+
+  /**
+   * @deprecated Use {@link getSubscriptions} instead.
+   */
+  getSubscribtions() {
+    return this.getSubscriptions()
   }
 
   subscribe(

@@ -69,6 +69,10 @@ export interface Client {
   subscriptionClient: SubscriptionClient
   removeSubscription: (subscription: ObservableSubscription) => void
   removeAllSubscriptions: () => void
+  getSubscriptions: () => ObservableSubscription[]
+  /**
+   * @deprecated Use `getSubscriptions` instead.
+   */
   getSubscribtions: () => ObservableSubscription[]
   query: <T>(
     flexibleRequestBody: FlexibleRequestBody,
@@ -92,6 +96,10 @@ export default class HgraphClient implements Client {
   private subscriptions: ObservableSubscription[]
   removeSubscription: (subscription: ObservableSubscription) => void
   removeAllSubscriptions: () => void
+  getSubscriptions: () => ObservableSubscription[]
+  /**
+   * @deprecated Use `getSubscriptions` instead.
+   */
   getSubscribtions: () => ObservableSubscription[]
   query: <T>(
     flexibleRequestBody: FlexibleRequestBody,
