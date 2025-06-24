@@ -1,4 +1,4 @@
-query MostRecentConcensusTimestamp {
+query MostRecentConsensusTimestamp {
   transaction(limit: 1, order_by: {consensus_timestamp: desc}) {
     consensus_timestamp
   }
