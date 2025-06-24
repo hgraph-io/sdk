@@ -141,6 +141,16 @@ npm install ../sdk
 
 This command tells npm to use the SDK from your local file system instead of fetching it from the npm registry.
 
+### Running Tests
+
+The project uses Jest with TypeScript support. Execute the test suite with:
+
+```bash
+npm test
+```
+
+All `*.test.ts` files in the `tests` directory will be run.
+
 ### Debugging
 
 To test the WebSocket connection and ensure that everything is set up correctly, you can use `wscat`, a WebSocket client for the command line.

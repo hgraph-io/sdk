@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "baseUrl": ".",
+    "paths": {
+      "../../graphql-ws/src": ["tests/__mocks__/graphql-ws"]
+    }
+  },
+  "include": ["src/**/*", "tests/**/*"]
+}
