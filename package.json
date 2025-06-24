@@ -59,13 +59,15 @@
     "esbuild": "0.21.4",
     "nodemon": "^2.0.20",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "vitest": "^3.2.4"
   },
   "scripts": {
     "watch": "nodemon -w src -e ts,json,gql,graphql --exec 'npm run build'",
     "build": "node ./build.mjs",
     "update-schema": ". ./scripts/update-schema.sh",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json}\"",
-    "prepublishOnly": "rm -Rf dist && npm run build"
+    "prepublishOnly": "rm -Rf dist && npm run build",
+    "test": "vitest run"
   }
 }
