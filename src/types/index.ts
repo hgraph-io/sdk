@@ -177,7 +177,7 @@ export interface GraphQLRequestPayload extends RequestBody {
  * Utils
  */
 
-declare function stripShardRealm(accountId: string): number
+export function stripShardRealm(accountId: string): number
 
 /*
  * JSON Patch Operation
