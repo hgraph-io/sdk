@@ -105,7 +105,15 @@ First, clone the repository to your local machine using GitHub CLI:
 gh repo clone hgraph-io/sdk
 ```
 
-#### 2. Install Dependencies
+#### 2. Initialize Git Submodules
+
+After cloning, make sure to pull down the repository's submodules:
+
+```bash
+git submodule update --init
+```
+
+#### 3. Install Dependencies
 
 Navigate to the cloned repository and install all necessary npm packages:
 
@@ -113,7 +121,7 @@ Navigate to the cloned repository and install all necessary npm packages:
 npm install
 ```
 
-#### 3. Build and Watch for Changes
+#### 4. Build and Watch for Changes
 
 To automatically rebuild the project whenever you make changes, run:
 
@@ -123,7 +131,7 @@ npm run watch
 
 This command watches for file changes and rebuilds the project accordingly.
 
-#### 4. Use the Local SDK in Another Project
+#### 5. Use the Local SDK in Another Project
 
 If you want to use your local version of the SDK in another project for testing or development purposes, you can set it as a local dependency:
 
