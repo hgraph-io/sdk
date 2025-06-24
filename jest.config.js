@@ -1,7 +1,17 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ['**/*.test.ts'],
+  testMatch: ['**/HgraphClient.test.ts', '**/HgraphContract.test.ts'],
+  collectCoverage: true,
+  collectCoverageFrom: ['src/utils/**/*.{ts,tsx}'],
+  coverageThreshold: {
+    global: {
+      lines: 100,
+      functions: 100,
+      branches: 100,
+      statements: 100,
+    },
+  },
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.test.json',
