@@ -181,3 +181,9 @@ See [`src/tokens/README.md`](src/tokens/README.md) for full examples.
 This Software Development Kit (SDK) is actively being developed in conjunction with the [Hgraph API](https://hgraph.com) to ensure seamless integration and compatibility between the two. We are committed to adopting [Semantic Versioning](https://semver.org) standards, which will provide clear and predictable updates, making it easier for developers to manage dependencies and stay informed about changes.
 
 > Before we release version 1.0, updates may introduce breaking changes as we refine the software. To maintain stability in production, we recommend pinning dependencies to an exact version using `--save-exact` when installing the package.
+
+## Continuous Integration and Dependency Updates
+
+This project runs its test suite automatically using **GitHub Actions**. Every push and pull request triggers the workflow defined in [`.github/workflows/test.yml`](.github/workflows/test.yml), which installs dependencies with `npm ci` and executes `npm test`.
+
+To keep dependencies current, **Dependabot** monitors `package.json` and opens weekly pull requests with updates. Review these PRs to stay on the latest compatible versions.
