@@ -4,6 +4,9 @@ import {
   Contract as EthersContract,
   InterfaceAbi,
   LogDescription as EventLogDescription,
+  type ContractRunner,
+  type BigNumberish,
+  type TransactionResponse,
 } from 'ethers'
 import {DocumentNode} from 'graphql/language/ast'
 import {Client as SubscriptionClient} from '../../graphql-ws/src'
@@ -152,6 +155,50 @@ export declare class HgraphContract {
   public queryEvents: (
     params?: ContractQueryEventsParams
   ) => Promise<EventLogDescription[]>
+}
+
+/*
+ * ERC-20
+ */
+export declare const ERC20_ABI: InterfaceAbi
+
+export declare class ERC20 {
+  public contract: EthersContract
+  constructor(address: string, runner: ContractRunner)
+  name(): Promise<string>
+  symbol(): Promise<string>
+  decimals(): Promise<number>
+  balanceOf(account: string): Promise<bigint>
+  transfer(to: string, amount: BigNumberish): Promise<TransactionResponse>
+  transferFrom(
+    from: string,
+    to: string,
+    amount: BigNumberish
+  ): Promise<TransactionResponse>
+}
+
+/*
+ * ERC-721
+ */
+export declare const ERC721_ABI: InterfaceAbi
+
+export declare class ERC721 {
+  public contract: EthersContract
+  constructor(address: string, runner: ContractRunner)
+  name(): Promise<string>
+  symbol(): Promise<string>
+  ownerOf(tokenId: BigNumberish): Promise<string>
+  tokenURI(tokenId: BigNumberish): Promise<string>
+  transferFrom(
+    from: string,
+    to: string,
+    tokenId: BigNumberish
+  ): Promise<TransactionResponse>
+  safeTransferFrom(
+    from: string,
+    to: string,
+    tokenId: BigNumberish
+  ): Promise<TransactionResponse>
 }
 
 /*
