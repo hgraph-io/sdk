@@ -171,6 +171,11 @@ This command initiates a WebSocket connection to the GraphQL endpoint at `wss://
 npm install -g wscat
 ```
 
+## Token Helpers (ERC-20 & ERC-721)
+
+The SDK provides simple wrappers around standard token contracts using `ethers.js`.
+See [`src/tokens/README.md`](src/tokens/README.md) for full examples.
+
 ## Versioning
 
 This Software Development Kit (SDK) is actively being developed in conjunction with the [Hgraph API](https://hgraph.com) to ensure seamless integration and compatibility between the two. We are committed to adopting [Semantic Versioning](https://semver.org) standards, which will provide clear and predictable updates, making it easier for developers to manage dependencies and stay informed about changes.
