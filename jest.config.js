@@ -12,11 +12,14 @@ module.exports = {
       statements: 100,
     },
   },
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.test.json',
-      diagnostics: false
-    }
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: 'tsconfig.test.json',
+        diagnostics: false,
+      },
+    ],
   },
   moduleNameMapper: {
     '\\.(gql|graphql)$': '<rootDir>/tests/__mocks__/fileMock.js',

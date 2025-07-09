@@ -6,6 +6,11 @@
     "resolveJsonModule": true,
     "typeRoots": ["node_modules/@types", "src/types"],
     "jsx": "react",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*", "graphql-ws/src/**/*"],
   "exclude": ["node_modules"]
