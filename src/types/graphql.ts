@@ -15374,13 +15374,24 @@ export type Token_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
-/** columns and relationships of "token_airdrop" */
+/**
+ * The airdrop_state enum can be one of the following:
+ * - CANCELLED: The airdrop was terminated before completion.
+ * - CLAIMED: The airdrop has been successfully claimed by the user.
+ * - PENDING: The airdrop is scheduled or awaiting claim.
+ */
 export type Token_Airdrop = {
   __typename?: 'token_airdrop';
   amount?: Maybe<Scalars['bigint']['output']>;
   receiver_account_id: Scalars['bigint']['output'];
   sender_account_id: Scalars['bigint']['output'];
   serial_number: Scalars['bigint']['output'];
+  /**
+   * Indicates the current state of the airdrop. Possible values:
+   * - CANCELLED: The airdrop was terminated before completion.
+   * - CLAIMED: The airdrop has been successfully claimed by the user.
+   * - PENDING: The airdrop is scheduled or awaiting claim.
+   */
   state: Scalars['airdrop_state']['output'];
   timestamp_range: Scalars['int8range']['output'];
   /** An object relationship */
@@ -15691,6 +15702,12 @@ export type Token_Airdrop_Max_Fields = {
   receiver_account_id?: Maybe<Scalars['bigint']['output']>;
   sender_account_id?: Maybe<Scalars['bigint']['output']>;
   serial_number?: Maybe<Scalars['bigint']['output']>;
+  /**
+   * Indicates the current state of the airdrop. Possible values:
+   * - CANCELLED: The airdrop was terminated before completion.
+   * - CLAIMED: The airdrop has been successfully claimed by the user.
+   * - PENDING: The airdrop is scheduled or awaiting claim.
+   */
   state?: Maybe<Scalars['airdrop_state']['output']>;
   token_id?: Maybe<Scalars['bigint']['output']>;
 };
@@ -15701,6 +15718,12 @@ export type Token_Airdrop_Max_Order_By = {
   receiver_account_id?: InputMaybe<Order_By>;
   sender_account_id?: InputMaybe<Order_By>;
   serial_number?: InputMaybe<Order_By>;
+  /**
+   * Indicates the current state of the airdrop. Possible values:
+   * - CANCELLED: The airdrop was terminated before completion.
+   * - CLAIMED: The airdrop has been successfully claimed by the user.
+   * - PENDING: The airdrop is scheduled or awaiting claim.
+   */
   state?: InputMaybe<Order_By>;
   token_id?: InputMaybe<Order_By>;
 };
@@ -15712,6 +15735,12 @@ export type Token_Airdrop_Min_Fields = {
   receiver_account_id?: Maybe<Scalars['bigint']['output']>;
   sender_account_id?: Maybe<Scalars['bigint']['output']>;
   serial_number?: Maybe<Scalars['bigint']['output']>;
+  /**
+   * Indicates the current state of the airdrop. Possible values:
+   * - CANCELLED: The airdrop was terminated before completion.
+   * - CLAIMED: The airdrop has been successfully claimed by the user.
+   * - PENDING: The airdrop is scheduled or awaiting claim.
+   */
   state?: Maybe<Scalars['airdrop_state']['output']>;
   token_id?: Maybe<Scalars['bigint']['output']>;
 };
@@ -15722,6 +15751,12 @@ export type Token_Airdrop_Min_Order_By = {
   receiver_account_id?: InputMaybe<Order_By>;
   sender_account_id?: InputMaybe<Order_By>;
   serial_number?: InputMaybe<Order_By>;
+  /**
+   * Indicates the current state of the airdrop. Possible values:
+   * - CANCELLED: The airdrop was terminated before completion.
+   * - CLAIMED: The airdrop has been successfully claimed by the user.
+   * - PENDING: The airdrop is scheduled or awaiting claim.
+   */
   state?: InputMaybe<Order_By>;
   token_id?: InputMaybe<Order_By>;
 };
@@ -15827,6 +15862,12 @@ export type Token_Airdrop_Stream_Cursor_Value_Input = {
   receiver_account_id?: InputMaybe<Scalars['bigint']['input']>;
   sender_account_id?: InputMaybe<Scalars['bigint']['input']>;
   serial_number?: InputMaybe<Scalars['bigint']['input']>;
+  /**
+   * Indicates the current state of the airdrop. Possible values:
+   * - CANCELLED: The airdrop was terminated before completion.
+   * - CLAIMED: The airdrop has been successfully claimed by the user.
+   * - PENDING: The airdrop is scheduled or awaiting claim.
+   */
   state?: InputMaybe<Scalars['airdrop_state']['input']>;
   timestamp_range?: InputMaybe<Scalars['int8range']['input']>;
   token_id?: InputMaybe<Scalars['bigint']['input']>;
