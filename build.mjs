@@ -56,6 +56,7 @@ try {
   await Promise.all([
     fs.copyFile('src/types/index.ts', 'dist/index.d.ts'),
     fs.copyFile('src/types/graphql.ts', 'dist/graphql.d.ts'),
+    fs.copyFile('schema.json', 'dist/schema.json'),
   ])
 } catch (err) {
   console.error('Build failed:', err)

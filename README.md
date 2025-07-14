@@ -178,6 +178,17 @@ See [`src/tokens/README.md`](src/tokens/README.md) for full examples and an
 explanation of the difference between contract tokens and Hedera's native
 tokens, including how to query native token holders via GraphQL.
 
+## Schema
+
+The package ships with `schema.json`, an introspection result of the Hgraph API.
+You can import it directly if your client tooling needs access to the schema:
+
+```javascript
+import schema from '@hgraph.io/sdk/dist/schema.json'
+```
+
+This is useful for tasks like generating typed queries with GraphQL Codegen.
+
 ## Versioning
 
 This Software Development Kit (SDK) is actively being developed in conjunction with the [Hgraph API](https://hgraph.com) to ensure seamless integration and compatibility between the two. We are committed to adopting [Semantic Versioning](https://semver.org) standards, which will provide clear and predictable updates, making it easier for developers to manage dependencies and stay informed about changes.
