@@ -3,7 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/HgraphClient.test.ts', '**/HgraphContract.test.ts'],
   collectCoverage: true,
-  collectCoverageFrom: ['src/utils/**/*.{ts,tsx}'],
+  collectCoverageFrom: ['src/**/**/*.{ts,tsx}'],
   coverageThreshold: {
     global: {
       lines: 100,

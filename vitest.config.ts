@@ -15,7 +15,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       all: true,
-      include: ['src/utils/**'],
+      include: ['src/**/**'],
       lines: 100,
       functions: 100,
       branches: 100,
