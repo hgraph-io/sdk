@@ -6,5 +6,7 @@ if (typeof window !== 'undefined')
 export * from '../types'
 export * from '../utils'
 export {default as default} from '../client'
+export * from '../contract'
+export * from '../tokens'
 
 export * from './auth'
