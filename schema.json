@@ -93638,7 +93638,7 @@
         {
           "kind": "OBJECT",
           "name": "token_airdrop",
-          "description": "columns and relationships of \"token_airdrop\"",
+          "description": "The airdrop_state enum can be one of the following:\n- CANCELLED: The airdrop was terminated before completion.\n- CLAIMED: The airdrop has been successfully claimed by the user.\n- PENDING: The airdrop is scheduled or awaiting claim.",
           "fields": [
             {
               "name": "amount",
@@ -93686,7 +93686,7 @@
             },
             {
               "name": "state",
-              "description": null,
+              "description": "Indicates the current state of the airdrop. Possible values:\n- CANCELLED: The airdrop was terminated before completion.\n- CLAIMED: The airdrop has been successfully claimed by the user.\n- PENDING: The airdrop is scheduled or awaiting claim.",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -95595,7 +95595,7 @@
             },
             {
               "name": "state",
-              "description": null,
+              "description": "Indicates the current state of the airdrop. Possible values:\n- CANCELLED: The airdrop was terminated before completion.\n- CLAIMED: The airdrop has been successfully claimed by the user.\n- PENDING: The airdrop is scheduled or awaiting claim.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -95651,7 +95651,7 @@
             },
             {
               "name": "state",
-              "description": null,
+              "description": "Indicates the current state of the airdrop. Possible values:\n- CANCELLED: The airdrop was terminated before completion.\n- CLAIMED: The airdrop has been successfully claimed by the user.\n- PENDING: The airdrop is scheduled or awaiting claim.",
               "type": {"kind": "ENUM", "name": "order_by", "ofType": null},
               "defaultValue": null
             },
@@ -95705,7 +95705,7 @@
             },
             {
               "name": "state",
-              "description": null,
+              "description": "Indicates the current state of the airdrop. Possible values:\n- CANCELLED: The airdrop was terminated before completion.\n- CLAIMED: The airdrop has been successfully claimed by the user.\n- PENDING: The airdrop is scheduled or awaiting claim.",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -95761,7 +95761,7 @@
             },
             {
               "name": "state",
-              "description": null,
+              "description": "Indicates the current state of the airdrop. Possible values:\n- CANCELLED: The airdrop was terminated before completion.\n- CLAIMED: The airdrop has been successfully claimed by the user.\n- PENDING: The airdrop is scheduled or awaiting claim.",
               "type": {"kind": "ENUM", "name": "order_by", "ofType": null},
               "defaultValue": null
             },
@@ -96235,7 +96235,7 @@
             },
             {
               "name": "state",
-              "description": null,
+              "description": "Indicates the current state of the airdrop. Possible values:\n- CANCELLED: The airdrop was terminated before completion.\n- CLAIMED: The airdrop has been successfully claimed by the user.\n- PENDING: The airdrop is scheduled or awaiting claim.",
               "type": {
                 "kind": "SCALAR",
                 "name": "airdrop_state",
@@ -118997,4 +118997,3 @@
     }
   }
 }
-

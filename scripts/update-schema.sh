@@ -120,3 +120,10 @@ curl -s -X POST \
   > schema.json
 
 echo "GraphQL schema saved to schema.json"
+
+# Format the downloaded schema using prettier if available
+if command -v npx >/dev/null; then
+  npx -y prettier --write schema.json
+else
+  echo "npx not found, skipping prettier formatting"
+fi
