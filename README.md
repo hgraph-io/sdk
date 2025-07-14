@@ -189,6 +189,30 @@ import schema from '@hgraph.io/sdk/dist/schema.json'
 
 This is useful for tasks like generating typed queries with GraphQL Codegen.
 
+### Using the generated types
+
+Type definitions for the entire API schema are exported as
+`@hgraph.io/sdk/dist/graphql`. These can be used to type your query
+results when calling `client.query`:
+
+```typescript
+import HgraphClient, {TokenHolders} from '@hgraph.io/sdk'
+import type {Token_Account} from '@hgraph.io/sdk/dist/graphql'
+
+const client = new HgraphClient()
+
+const {data} = await client.query<{
+  token_account: Pick<Token_Account, 'account_id' | 'balance'>[]
+}>({
+  query: TokenHolders,
+  variables: {tokenId: '0xTokenAddress', limit: 100, offset: 0},
+})
+
+for (const holder of data.token_account) {
+  console.log(holder.account_id, holder.balance)
+}
+```
+
 ## Versioning
 
 This Software Development Kit (SDK) is actively being developed in conjunction with the [Hgraph API](https://hgraph.com) to ensure seamless integration and compatibility between the two. We are committed to adopting [Semantic Versioning](https://semver.org) standards, which will provide clear and predictable updates, making it easier for developers to manage dependencies and stay informed about changes.

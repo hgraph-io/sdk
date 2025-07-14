@@ -27,4 +27,10 @@ describe('package entry point exports', () => {
     expect(typeof sdk.ERC721).toBe('function')
     expect(Array.isArray(sdk.ERC721_ABI)).toBe(true)
   })
+
+  it('re-exports schema', async () => {
+    const sdk = await import('../src')
+    const schemaModule = await import('../src/schema')
+    expect(sdk.schema).toBe(schemaModule.default)
+  })
 })

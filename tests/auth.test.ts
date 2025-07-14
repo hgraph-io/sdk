@@ -58,4 +58,44 @@ describe('authentication helpers', () => {
     const wrongPublic = PUBLIC_KEY_DER_PREFIX + publicKeyFromPrivateKey(makePrivateKey(wrongSeed))
     await expect(verifyJws(jws, wrongPublic)).rejects.toThrow()
   })
+
+  describe('browser environment', () => {
+    let originalCrypto: any
+    beforeEach(() => {
+      originalCrypto = (globalThis as any).crypto
+      Object.defineProperty(globalThis, 'crypto', {
+        value: {},
+        configurable: true,
+      })
+    })
+    afterEach(() => {
+      Object.defineProperty(globalThis, 'crypto', {
+        value: originalCrypto,
+        configurable: true,
+      })
+    })
+
+    it('createJws throws', async () => {
+      await expect(
+        createJws('deadbeef', 'bead', {
+          issuer: '0.0.1',
+          claims: {},
+          audience: 'hgraph',
+          expirationTime: '1h',
+        })
+      ).rejects.toThrow('Not supported in a browser environment')
+    })
+
+    it('verifyJws throws', async () => {
+      await expect(verifyJws('token', 'key')).rejects.toThrow(
+        'Not supported in a browser environment'
+      )
+    })
+  })
+
+  it('exports helpers from index', async () => {
+    const auth = await import('../src/server/auth')
+    expect(auth.createJws).toBe(createJws)
+    expect(auth.verifyJws).toBe(verifyJws)
+  })
 })

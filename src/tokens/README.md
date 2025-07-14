@@ -62,3 +62,22 @@ for (const holder of data.token_account) {
   console.log(holder.account_id, holder.balance)
 }
 ```
+
+To strongly type the returned data you can import the GraphQL schema
+definitions that ship with the SDK:
+
+```typescript
+import type {Token_Account} from '@hgraph.io/sdk/dist/graphql'
+
+const {data} = await client.query<{
+  token_account: Pick<Token_Account, 'account_id' | 'balance'>[]
+}>({
+  query: TokenHolders,
+  variables: {tokenId: '0xTokenAddress', limit: 100, offset: 0},
+})
+
+data.token_account.forEach((holder) => {
+  // holder has type Pick<Token_Account, 'account_id' | 'balance'>
+  console.log(holder.account_id, holder.balance)
+})
+```
