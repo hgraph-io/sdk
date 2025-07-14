@@ -174,7 +174,9 @@ npm install -g wscat
 ## Token Helpers (ERC-20 & ERC-721)
 
 The SDK provides simple wrappers around standard token contracts using `ethers.js`.
-See [`src/tokens/README.md`](src/tokens/README.md) for full examples.
+See [`src/tokens/README.md`](src/tokens/README.md) for full examples and an
+explanation of the difference between contract tokens and Hedera's native
+tokens, including how to query native token holders via GraphQL.
 
 ## Versioning
 

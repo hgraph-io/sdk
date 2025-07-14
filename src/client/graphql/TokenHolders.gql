@@ -1,0 +1,12 @@
+# Get token holders for a specific token
+query TokenHolders($tokenId: bigint!, $limit: Int = 100, $offset: Int = 0) {
+  token_account(
+    where: {token_id: {_eq: $tokenId}, balance: {_gt: "0"}}
+    order_by: {balance: desc}
+    limit: $limit
+    offset: $offset
+  ) {
+    account_id
+    balance
+  }
+}
