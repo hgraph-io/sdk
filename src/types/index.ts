@@ -168,7 +168,10 @@ export declare class ERC20 {
   name(): Promise<string>
   symbol(): Promise<string>
   decimals(): Promise<number>
+  totalSupply(): Promise<bigint>
   balanceOf(account: string): Promise<bigint>
+  allowance(owner: string, spender: string): Promise<bigint>
+  approve(spender: string, amount: BigNumberish): Promise<TransactionResponse>
   transfer(to: string, amount: BigNumberish): Promise<TransactionResponse>
   transferFrom(
     from: string,
@@ -187,8 +190,12 @@ export declare class ERC721 {
   constructor(address: string, runner: ContractRunner)
   name(): Promise<string>
   symbol(): Promise<string>
+  supportsInterface(interfaceId: string): Promise<boolean>
+  balanceOf(owner: string): Promise<bigint>
   ownerOf(tokenId: BigNumberish): Promise<string>
   tokenURI(tokenId: BigNumberish): Promise<string>
+  getApproved(tokenId: BigNumberish): Promise<string>
+  isApprovedForAll(owner: string, operator: string): Promise<boolean>
   transferFrom(
     from: string,
     to: string,
@@ -197,7 +204,13 @@ export declare class ERC721 {
   safeTransferFrom(
     from: string,
     to: string,
-    tokenId: BigNumberish
+    tokenId: BigNumberish,
+    data?: string
+  ): Promise<TransactionResponse>
+  approve(to: string, tokenId: BigNumberish): Promise<TransactionResponse>
+  setApprovalForAll(
+    operator: string,
+    approved: boolean
   ): Promise<TransactionResponse>
 }
 
