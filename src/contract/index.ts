@@ -87,3 +87,5 @@ export class HgraphContract implements Contract {
     return parsedEvents
   }
 }
+
+export {detectContractType, type ContractType} from './detectContractType'

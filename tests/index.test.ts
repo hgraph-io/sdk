@@ -19,6 +19,7 @@ describe('package entry point exports', () => {
   it('re-exports other modules', async () => {
     const sdk = await import('../src')
     expect(typeof sdk.HgraphContract).toBe('function')
+    expect(typeof sdk.detectContractType).toBe('function')
     expect(typeof sdk.useHgraph).toBe('function')
     expect(typeof sdk.HgraphProvider).toBe('function')
     expect(typeof sdk.ERC20).toBe('function')

@@ -7,6 +7,7 @@ import {
   type ContractRunner,
   type BigNumberish,
   type TransactionResponse,
+  type JsonRpcProvider,
 } from 'ethers'
 import {DocumentNode} from 'graphql/language/ast'
 import {Client as SubscriptionClient} from '../../graphql-ws/src'
@@ -213,6 +214,13 @@ export declare class ERC721 {
     approved: boolean
   ): Promise<TransactionResponse>
 }
+
+export type ContractType = 'erc20' | 'erc721' | 'unknown'
+
+export function detectContractType(
+  address: string,
+  provider: JsonRpcProvider,
+): Promise<ContractType>
 
 /*
  * Requests
