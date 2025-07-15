@@ -184,20 +184,20 @@ The package ships with `schema.json`, an introspection result of the Hgraph API.
 You can import it directly if your client tooling needs access to the schema:
 
 ```javascript
-import schema from '@hgraph.io/sdk/dist/schema.json'
+import {schema} from '@hgraph.io/sdk'
 ```
 
 This is useful for tasks like generating typed queries with GraphQL Codegen.
 
 ### Using the generated types
 
-Type definitions for the entire API schema are exported as
-`@hgraph.io/sdk/dist/graphql`. These can be used to type your query
-results when calling `client.query`:
+Type definitions for the entire API schema are exported directly from
+`@hgraph.io/sdk`. These can be used to type your query results when
+calling `client.query`:
 
 ```typescript
 import HgraphClient, {TokenHolders} from '@hgraph.io/sdk'
-import type {Token_Account} from '@hgraph.io/sdk/dist/graphql'
+import type {Token_Account} from '@hgraph.io/sdk'
 
 const client = new HgraphClient()
 

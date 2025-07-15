@@ -67,7 +67,7 @@ To strongly type the returned data you can import the GraphQL schema
 definitions that ship with the SDK:
 
 ```typescript
-import type {Token_Account} from '@hgraph.io/sdk/dist/graphql'
+import type {Token_Account} from '@hgraph.io/sdk'
 
 const {data} = await client.query<{
   token_account: Pick<Token_Account, 'account_id' | 'balance'>[]
