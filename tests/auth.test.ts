@@ -1,4 +1,4 @@
-import {describe, it, expect, beforeEach, afterEach} from 'vitest'
+import {describe, it, expect, beforeEach, afterEach} from '@jest/globals'
 import createJws from '../src/server/auth/createJws'
 import verifyJws from '../src/server/auth/verifyJws'
 import {publicKeyFromPrivateKey} from '../src/server/utils'

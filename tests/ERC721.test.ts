@@ -1,22 +1,22 @@
-import {describe, it, expect, vi} from 'vitest'
+import {describe, it, expect, jest} from '@jest/globals'
 import ERC721 from '../src/tokens/erc721'
 
 describe('ERC721 wrapper', () => {
   it('calls underlying contract methods', async () => {
     const nft = new ERC721('0x0', {} as any)
     const mock = {
-      name: vi.fn().mockResolvedValue('NFT'),
-      symbol: vi.fn().mockResolvedValue('NFT'),
-      supportsInterface: vi.fn().mockResolvedValue(true),
-      balanceOf: vi.fn().mockResolvedValue(2n),
-      ownerOf: vi.fn().mockResolvedValue('0xabc'),
-      tokenURI: vi.fn().mockResolvedValue('uri'),
-      getApproved: vi.fn().mockResolvedValue('0xdef'),
-      isApprovedForAll: vi.fn().mockResolvedValue(true),
-      approve: vi.fn().mockResolvedValue('tx0'),
-      setApprovalForAll: vi.fn().mockResolvedValue('tx1'),
-      transferFrom: vi.fn().mockResolvedValue('tx1'),
-      safeTransferFrom: vi.fn().mockResolvedValue('tx2'),
+      name: jest.fn().mockResolvedValue('NFT'),
+      symbol: jest.fn().mockResolvedValue('NFT'),
+      supportsInterface: jest.fn().mockResolvedValue(true),
+      balanceOf: jest.fn().mockResolvedValue(2n),
+      ownerOf: jest.fn().mockResolvedValue('0xabc'),
+      tokenURI: jest.fn().mockResolvedValue('uri'),
+      getApproved: jest.fn().mockResolvedValue('0xdef'),
+      isApprovedForAll: jest.fn().mockResolvedValue(true),
+      approve: jest.fn().mockResolvedValue('tx0'),
+      setApprovalForAll: jest.fn().mockResolvedValue('tx1'),
+      transferFrom: jest.fn().mockResolvedValue('tx1'),
+      safeTransferFrom: jest.fn().mockResolvedValue('tx2'),
     }
     ;(nft as any).contract = mock
 

@@ -1,19 +1,19 @@
-import {describe, it, expect, vi} from 'vitest'
+import {describe, it, expect, jest} from '@jest/globals'
 import ERC20 from '../src/tokens/erc20'
 
 describe('ERC20 wrapper', () => {
   it('calls underlying contract methods', async () => {
     const token = new ERC20('0x0', {} as any)
     const mock = {
-      name: vi.fn().mockResolvedValue('Token'),
-      symbol: vi.fn().mockResolvedValue('TKN'),
-      decimals: vi.fn().mockResolvedValue(18),
-      totalSupply: vi.fn().mockResolvedValue(1000n),
-      balanceOf: vi.fn().mockResolvedValue(5n),
-      allowance: vi.fn().mockResolvedValue(1n),
-      approve: vi.fn().mockResolvedValue('tx0'),
-      transfer: vi.fn().mockResolvedValue('tx1'),
-      transferFrom: vi.fn().mockResolvedValue('tx2'),
+      name: jest.fn().mockResolvedValue('Token'),
+      symbol: jest.fn().mockResolvedValue('TKN'),
+      decimals: jest.fn().mockResolvedValue(18),
+      totalSupply: jest.fn().mockResolvedValue(1000n),
+      balanceOf: jest.fn().mockResolvedValue(5n),
+      allowance: jest.fn().mockResolvedValue(1n),
+      approve: jest.fn().mockResolvedValue('tx0'),
+      transfer: jest.fn().mockResolvedValue('tx1'),
+      transferFrom: jest.fn().mockResolvedValue('tx2'),
     }
     ;(token as any).contract = mock
 

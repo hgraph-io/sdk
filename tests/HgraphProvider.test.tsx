@@ -1,4 +1,4 @@
-import {describe, it, expect, vi} from 'vitest'
+import {describe, it, expect, jest} from '@jest/globals'
 import React from 'react'
 import TestRenderer from 'react-test-renderer'
 import {HgraphProvider} from '../src/context/HgraphProvider'
@@ -29,7 +29,7 @@ describe('HgraphProvider and useHgraph', () => {
       useHgraph()
       return null
     }
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const spy = jest.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => {
       render(<Test />)
     }).toThrow()

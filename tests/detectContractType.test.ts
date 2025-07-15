@@ -1,9 +1,9 @@
-import {describe, it, expect, beforeEach, vi} from 'vitest'
+import {describe, it, expect, beforeEach, jest} from '@jest/globals'
 
-const supportsInterfaceMock = vi.fn()
-const decimalsMock = vi.fn()
+const supportsInterfaceMock = jest.fn()
+const decimalsMock = jest.fn()
 
-vi.mock('ethers', () => ({
+jest.mock('ethers', () => ({
   Contract: class {
     constructor(_address: string, abi: any) {
       if (abi.some((s: string) => s.includes('supportsInterface'))) {

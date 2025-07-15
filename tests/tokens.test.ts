@@ -1,4 +1,4 @@
-import {describe, it, expect} from 'vitest'
+import {describe, it, expect} from '@jest/globals'
 
 // ensure the token helpers are re-exported correctly from the index
 

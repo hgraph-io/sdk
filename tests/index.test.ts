@@ -1,7 +1,6 @@
-import {describe, it, expect, vi} from 'vitest'
+import {describe, it, expect, jest} from '@jest/globals'
 
-vi.mock('../src/client/graphql', () => ({}));
-(globalThis as any).jest = {fn: vi.fn};
+jest.mock('../src/client/graphql', () => ({}));
 
 describe('package entry point exports', () => {
   it('exports HgraphClient as default', async () => {

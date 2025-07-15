@@ -149,7 +149,7 @@ The project uses Jest with TypeScript support. Execute the test suite with:
 npm test
 ```
 
-All `*.test.ts` files in the `tests` directory will be run.
+All `*.test.ts` and `*.test.tsx` files in the `tests` directory will be run.
 
 ### Debugging
 

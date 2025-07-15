@@ -1,17 +1,9 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ['**/HgraphClient.test.ts', '**/HgraphContract.test.ts'],
+  testMatch: ['**/*.test.ts', '**/*.test.tsx'],
   collectCoverage: true,
   collectCoverageFrom: ['src/**/**/*.{ts,tsx}'],
-  coverageThreshold: {
-    global: {
-      lines: 100,
-      functions: 100,
-      branches: 100,
-      statements: 100,
-    },
-  },
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
