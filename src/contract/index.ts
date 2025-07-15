@@ -6,6 +6,7 @@ import HgraphClient, {
   ContractOptions,
   ContractQueryEventsParams,
 } from '../types'
+import type {Contract_Log} from '../types'
 
 export {LogDescription, InterfaceAbi, Contract as EthersContract} from 'ethers'
 
@@ -30,13 +31,10 @@ export class HgraphContract implements Contract {
     const {limit = 10, offset = 0, order = 'desc'} = params
 
     const {data: eventLogs, errors} = await this.client.query<{
-      logs: {
-        data: string | null
-        topic0: string | null
-        topic1: string | null
-        topic2: string | null
-        topic3: string | null
-      }[]
+      logs: Pick<
+        Contract_Log,
+        'data' | 'topic0' | 'topic1' | 'topic2' | 'topic3'
+      >[]
     }>({
       query: ContractEventLogs,
       variables: {

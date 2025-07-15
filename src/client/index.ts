@@ -4,6 +4,7 @@ import WebSocket from 'isomorphic-ws'
 import {createPatch} from 'rfc6902'
 import {AddOperation, RemoveOperation, ReplaceOperation} from 'rfc6902/diff'
 import {createClient, Client as SubscriptionClient} from '../../graphql-ws/src'
+import type {ExecutionResult} from 'graphql'
 import {
   Network,
   Environment,
@@ -65,10 +66,10 @@ export default class HgraphClient implements Client {
     this.subscriptions = []
   }
 
-  async query(
+  async query<T>(
     flexibleRequestBody: FlexibleRequestBody,
     abortSignal?: AbortSignal
-  ) {
+  ): Promise<ExecutionResult<T>> {
     const body = formatRequestBody(flexibleRequestBody)
     const response = await fetch(this.endpoint, {
       method: 'POST',
@@ -80,7 +81,7 @@ export default class HgraphClient implements Client {
     if (!response.ok)
       throw new Error(`${response.status} - ${response.statusText}`)
 
-    return parse(await response.text())
+    return parse(await response.text()) as ExecutionResult<T>
   }
 
   removeSubscription(observable: ObservableSubscription) {
