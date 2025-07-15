@@ -8,6 +8,7 @@ import HgraphClient, {
 } from '../types'
 import type {Contract_Log} from '../types'
 
+/* istanbul ignore next */
 export {LogDescription, InterfaceAbi, Contract as EthersContract} from 'ethers'
 
 export class HgraphContract implements Contract {
