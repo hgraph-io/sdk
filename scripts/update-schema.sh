@@ -127,3 +127,10 @@ if command -v npx >/dev/null; then
 else
   echo "npx not found, skipping prettier formatting"
 fi
+
+# Generate updated TypeScript definitions from the new schema
+if command -v npx >/dev/null; then
+  npx -y graphql-codegen
+else
+  echo "npx not found, skipping type generation"
+fi
