@@ -3,7 +3,7 @@ module.exports = {
   // Documents are omitted due to schema mismatch
   documents: [],
   generates: {
-    'src/types/graphql.ts': {
+    'src/types/graphql.d.ts': {
       plugins: ['typescript'],
     },
   },
