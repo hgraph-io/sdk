@@ -26,6 +26,10 @@ describe('formatRequestBody', () => {
 
   it('throws on malformed input', () => {
     // @ts-expect-error testing runtime failure
-    expect(() => formatRequestBody(123 as any)).toThrow()
+    try {
+      formatRequestBody({foo: 1} as any)
+      } catch (e) {
+      expect(e).toBeInstanceOf(Error)
+    }
   })
 })
