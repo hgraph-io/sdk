@@ -6,7 +6,7 @@ const ERC165_ABI: InterfaceAbi = [
 
 const ERC20_ABI: InterfaceAbi = ['function decimals() view returns (uint8)']
 
-export type ContractType = 'erc20' | 'erc721' | 'unknown'
+export type ContractType = 'erc20' | 'erc721' | 'erc1155' | 'unknown'
 
 export async function detectContractType(
   address: string,
@@ -16,6 +16,9 @@ export async function detectContractType(
   try {
     if (await erc165.supportsInterface('0x80ac58cd')) {
       return 'erc721'
+    }
+    if (await erc165.supportsInterface('0xd9b67a26')) {
+      return 'erc1155'
     }
   } catch {
     // supportsInterface not available

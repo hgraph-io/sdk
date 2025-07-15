@@ -215,7 +215,7 @@ export declare class ERC721 {
   ): Promise<TransactionResponse>
 }
 
-export type ContractType = 'erc20' | 'erc721' | 'unknown'
+export type ContractType = 'erc20' | 'erc721' | 'erc1155' | 'unknown'
 
 export function detectContractType(
   address: string,

@@ -26,10 +26,18 @@ beforeEach(() => {
 
 describe('detectContractType', () => {
   it('returns erc721 when supportsInterface returns true', async () => {
-    supportsInterfaceMock.mockResolvedValue(true)
+    supportsInterfaceMock.mockResolvedValueOnce(true)
     const type = await detectContractType('0x0', {} as any)
     expect(type).toBe('erc721')
     expect(supportsInterfaceMock).toHaveBeenCalled()
+  })
+
+  it('returns erc1155 when supportsInterface detects the interface', async () => {
+    supportsInterfaceMock.mockResolvedValueOnce(false).mockResolvedValueOnce(true)
+    const type = await detectContractType('0x0', {} as any)
+    expect(type).toBe('erc1155')
+    expect(supportsInterfaceMock).toHaveBeenCalledTimes(2)
+    expect(decimalsMock).not.toHaveBeenCalled()
   })
 
   it('returns erc20 when decimals() is available', async () => {
