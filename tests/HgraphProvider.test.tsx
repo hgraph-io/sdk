@@ -1,4 +1,4 @@
-import {describe, it, expect} from 'vitest'
+import {describe, it, expect, vi} from 'vitest'
 import React from 'react'
 import TestRenderer from 'react-test-renderer'
 import {HgraphProvider} from '../src/context/HgraphProvider'
@@ -29,8 +29,10 @@ describe('HgraphProvider and useHgraph', () => {
       useHgraph()
       return null
     }
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
     expect(() => {
       render(<Test />)
     }).toThrow()
+    spy.mockRestore()
   })
 })
