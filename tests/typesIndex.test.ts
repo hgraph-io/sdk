@@ -7,6 +7,11 @@ describe('types index exports', () => {
     const provider = await import('../src/context/HgraphProvider')
     expect(types.useHgraph).toBe(hooks.useHgraph)
     expect(types.HgraphProvider).toBe(provider.HgraphProvider)
+
+    // accessing these triggers getter functions defined in the index
+    const ethers = await import('ethers')
+    expect(types.EthersContract).toBe(ethers.Contract)
+    expect(types.EventLogDescription).toBe(ethers.LogDescription)
   })
 
   it('exports enums and default client class', async () => {
