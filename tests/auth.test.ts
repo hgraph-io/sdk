@@ -11,20 +11,6 @@ function makePrivateKey(seed: Buffer) {
 }
 
 describe('authentication helpers', () => {
-  let originalCrypto: any
-  beforeEach(() => {
-    originalCrypto = (globalThis as any).crypto
-    Object.defineProperty(globalThis, 'crypto', {
-      value: undefined,
-      configurable: true,
-    })
-  })
-  afterEach(() => {
-    Object.defineProperty(globalThis, 'crypto', {
-      value: originalCrypto,
-      configurable: true,
-    })
-  })
 
   it('creates and verifies a JWS', async () => {
     const seed = Buffer.alloc(32, 1)
@@ -60,19 +46,11 @@ describe('authentication helpers', () => {
   })
 
   describe('browser environment', () => {
-    let originalCrypto: any
     beforeEach(() => {
-      originalCrypto = (globalThis as any).crypto
-      Object.defineProperty(globalThis, 'crypto', {
-        value: {},
-        configurable: true,
-      })
+      (globalThis as any).window = {}
     })
     afterEach(() => {
-      Object.defineProperty(globalThis, 'crypto', {
-        value: originalCrypto,
-        configurable: true,
-      })
+      delete (globalThis as any).window
     })
 
     it('createJws throws', async () => {

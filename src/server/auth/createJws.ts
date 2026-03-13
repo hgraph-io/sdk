@@ -15,7 +15,7 @@ import * as jose from 'jose'
 //https://github.com/hashgraph/hedera-sdk-js/blob/develop/packages/cryptography/src/Ed25519PrivateKey.js
 //https://github.com/hashgraph/hedera-sdk-js/blob/develop/packages/cryptography/src/Ed25519PublicKey.js
 async function createPrivateKey(cryptoAccountPrivateKey: string) {
-  if (globalThis.crypto)
+  if (typeof window !== 'undefined')
     throw new Error('Not supported in a browser environment')
 
   const crypto = await import('node:crypto')

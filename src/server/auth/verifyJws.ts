@@ -6,7 +6,7 @@ export default async function verifyJws(
   jws: string,
   cryptoAccountPublicKey: string
 ) {
-  if (globalThis.crypto)
+  if (typeof window !== 'undefined')
     throw new Error('Not supported in a browser environment')
 
   const crypto = await import('node:crypto')
