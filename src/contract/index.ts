@@ -56,6 +56,7 @@ export class HgraphContract implements Contract {
       topics: string[]
       data: string
     }[] = []
+    // codegen types the bytea scalar as unknown; the API sends it as a hex string
     const formatHex = (value: string) => '0x' + value.slice(2).padStart(64, '0')
 
     eventLogs.logs?.forEach((log) => {
@@ -63,10 +64,10 @@ export class HgraphContract implements Contract {
 
       const topics = [log.topic0, log.topic1, log.topic2, log.topic3]
         .filter(Boolean)
-        .map((topic) => formatHex(topic!))
+        .map((topic) => formatHex(topic as string))
 
       formattedLogs.push({
-        data: formatHex(log.data),
+        data: formatHex(log.data as string),
         topics,
       })
     })
