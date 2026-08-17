@@ -1,11 +1,15 @@
 import {describe, it, expect, jest} from '@jest/globals'
 import React from 'react'
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, {act} from 'react-test-renderer'
 import {HgraphProvider} from '../src/context/HgraphProvider'
 import {useHgraph} from '../src/hooks/useHgraph'
 
+// React 19 schedules rendering instead of flushing it inside create(), so the tree
+// must be flushed in act() for render output and render-time throws to be observable.
 function render(element: React.ReactElement) {
-  TestRenderer.create(element)
+  act(() => {
+    TestRenderer.create(element)
+  })
 }
 
 describe('HgraphProvider and useHgraph', () => {
