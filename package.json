@@ -52,7 +52,7 @@
     "utf-8-validate": "^6.0.3"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/cli": "^7.2.0",
     "@graphql-codegen/typescript": "^4.1.6",
     "@graphql-codegen/typescript-operations": "^5.0.9",
     "@types/isomorphic-fetch": "^0.0.36",
