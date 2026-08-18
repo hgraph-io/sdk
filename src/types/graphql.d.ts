@@ -1,10 +1,5 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -12,24 +7,24 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  _entity_id: { input: any; output: any; }
-  _int8: { input: any; output: any; }
-  airdrop_state: { input: any; output: any; }
-  bigint: { input: any; output: any; }
-  bytea: { input: any; output: any; }
-  entity_scalar: { input: any; output: any; }
-  entity_type: { input: any; output: any; }
-  errata_type: { input: any; output: any; }
-  int8range: { input: any; output: any; }
-  jsonb: { input: any; output: any; }
-  order_by_consensus_timestamp: { input: any; output: any; }
-  smallint: { input: any; output: any; }
-  timestamp: { input: any; output: any; }
-  token_pause_status: { input: any; output: any; }
-  token_supply_type: { input: any; output: any; }
-  token_type: { input: any; output: any; }
-  transaction_scalar: { input: any; output: any; }
-  transfer_type: { input: any; output: any; }
+  _entity_id: { input: unknown; output: unknown; }
+  _int8: { input: unknown; output: unknown; }
+  airdrop_state: { input: unknown; output: unknown; }
+  bigint: { input: unknown; output: unknown; }
+  bytea: { input: unknown; output: unknown; }
+  entity_scalar: { input: unknown; output: unknown; }
+  entity_type: { input: unknown; output: unknown; }
+  errata_type: { input: unknown; output: unknown; }
+  int8range: { input: unknown; output: unknown; }
+  jsonb: { input: unknown; output: unknown; }
+  order_by_consensus_timestamp: { input: unknown; output: unknown; }
+  smallint: { input: unknown; output: unknown; }
+  timestamp: { input: unknown; output: unknown; }
+  token_pause_status: { input: unknown; output: unknown; }
+  token_supply_type: { input: unknown; output: unknown; }
+  token_type: { input: unknown; output: unknown; }
+  transaction_scalar: { input: unknown; output: unknown; }
+  transfer_type: { input: unknown; output: unknown; }
 };
 
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
